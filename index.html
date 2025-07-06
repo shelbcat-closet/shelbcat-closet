@@ -1,86 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Gloock&family=Great+Vibes&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
   <title>Shelbcat Closet</title>
+
+  <!-- ✨ Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Great+Vibes&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+
   <style>
- <style>
-  /* Set default font for body */
-  body {
-    font-family: 'Gloock', serif;
-    background-color: #f9f4ea;
-    color: #2f1e1e;
-    padding: 2em;
-    max-width: 800px;
-    margin: auto;
-  }
-
-  /* Headings use Uncial Antiqua */
-  h1, h2, h3 {
-    font-family: 'Uncial Antiqua', serif;
-    color: #4b3028;
-  }
-
-  /* Badge or scroll titles use Great Vibes */
-  .scroll-title, .badge-name {
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.6em;
-    color: #826754;
-  }
-
-  /* Optional: italics for quest descriptions */
-  .quest-description {
-    font-style: italic;
-    color: #5a4444;
-  }
-</style>
-      background-color: #f5f0ea;
-      color: #2e1a1a;
+    body {
+      font-family: 'Gloock', serif;
+      background-color: #f9f4ea;
+      background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+      background-repeat: repeat;
+      color: #2e1b1b;
       padding: 2em;
       max-width: 800px;
       margin: auto;
+      line-height: 1.6;
     }
+
     h1, h2 {
-      color: #543c2c;
+      font-family: 'Uncial Antiqua', serif;
+      color: #4b2e2e;
       text-align: center;
     }
+
+    .scroll-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2em;
+      text-align: center;
+      color: #826754;
+      margin-top: 2em;
+    }
+
     .quest {
-      background: #fff8f2;
-      border: 2px dashed #c2a178;
-      padding: 1em;
+      background: rgba(255, 248, 238, 0.8);
+      border: 2px dashed #c6aa88;
+      padding: 1.2em;
       margin-bottom: 2em;
+      border-radius: 8px;
     }
-    .badge {
-      font-size: 1em;
-      color: #6c4f3d;
+
+    .quest-description {
+      font-style: italic;
+      color: #5a4444;
     }
+
+    .badge-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.5em;
+      color: #8d6f56;
+      margin-top: 0.5em;
+    }
+
     .button {
-      background: #c2a178;
-      color: white;
+      background-color: #b88b6b;
+      color: #fff8f0;
       padding: 0.5em 1em;
       text-decoration: none;
-      border-radius: 4px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 0.5em;
+    }
+
+    .button:hover {
+      background-color: #9c7054;
+    }
+
+    a {
+      color: #6a4433;
     }
   </style>
 </head>
+
 <body>
   <h1>🪡 Shelbcat Closet</h1>
-  <p>Welcome, Apprentice Stitchmage. Begin your training in the ancient fiber arts and unlock arcane mastery, one thread at a time.</p>
+  <p style="text-align:center;">
+    Welcome, Apprentice Stitchmage. Begin your training in the ancient fiber arts and unlock arcane mastery, one thread at a time.
+  </p>
 
   <div class="quest">
     <h2>🧵 Quest 1: The Needle’s Path</h2>
-    <p>Learn how to thread a needle and tie a secure knot. This is the first rite of every initiate.</p>
-    <p><a class="button" href="quest1.html">Begin Lesson</a></p>
-    <p class="badge-name">🏅 Earn the “Initiate’s Knot” badge</p>
+    <p class="quest-description">Learn how to thread a needle and tie a secure knot. This is the first rite of every initiate.</p>
+    <a class="button" href="quest1.html">Begin Lesson</a>
+    <p class="badge-name"> 🏅 Earn the “Initiate’s Knot” badge </p>
   </div>
 
   <div class="quest">
     <h2>🪢 Quest 2: Binding the Sacred Edge</h2>
-    <p>Master the whipstitch to protect raw fabric edges from fraying. This technique binds the energy of your cloth.</p>
-    <p><a class="button" href="#">Begin Lesson</a></p>
+    <p class="quest-description">Master the whipstitch to seal fraying fabric and protect your garments with care and magic.</p>
+    <a class="button" href="#">Begin Lesson</a>
     <p class="badge-name">🏅 Earn the “Edgewarden” badge</p>
   </div>
-<h2 class="scroll-title">🗺️ Scroll of Progress</h2>
-  <p style="text-align:center;">🗺️ Track your quests with the <a href="#">Progress Scroll</a></p>
+
+  <h2 class="scroll-title">📜 Scroll of Progress</h2>
+  <p style="text-align:center;">
+    Track your quests and sigils with the <a href="#">Progress Scroll</a>
+  </p>
 </body>
 </html>
