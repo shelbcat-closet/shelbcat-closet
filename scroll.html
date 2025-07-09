@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shelbcat Closet Guild Quest Log</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Gloock&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Gloock', serif;
+      background-color: #f8f3e7;
+      background-image: url('https://www.transparenttextures.com/patterns/rice-paper.png');
+      color: #3a2a25;
+      display: flex;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: 260px;
+      background-color: #d1bfa3;
+      padding: 1em;
+      border-right: 3px solid #a88b65;
+      min-height: 100vh;
+      box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar h2 {
+      font-family: 'Uncial Antiqua', serif;
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 1em;
+      color: #5a4031;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 0.6em 0.8em;
+      text-decoration: none;
+      color: #3d2b20;
+      background: #ede0cc;
+      margin: 0.4em 0;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .sidebar a:hover {
+      background: #e2d0b5;
+    }
+
+    .sidebar .locked {
+      color: #888;
+      background: #f2ebe0;
+      cursor: default;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 2em;
+    }
+
+    .quest-title {
+      font-family: 'Uncial Antiqua', serif;
+      font-size: 2em;
+      color: #4c362b;
+      margin-bottom: 0.3em;
+    }
+
+    .quest-desc {
+      font-style: italic;
+      color: #634a3e;
+    }
+
+    .badge {
+      font-weight: bold;
+      color: #94633e;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <h2>📜 Quests</h2>
+    <a href="#quest1">🧵 Quest 1: The Needle’s Path</a>
+    <a href="#quest2">🪢 Quest 2: Sacred Edge Binding</a>
+    <a class="locked">🔒 Quest 3: ???</a>
+    <a class="locked">🔒 Quest 4: ???</a>
+  </div>
+
+  <!-- Main Scroll Area -->
+  <div class="main">
+    <section id="quest1">
+      <h1 class="quest-title">🧵 Quest 1: The Needle’s Path</h1>
+      <p class="quest-desc">
+        You must thread the sacred needle under moonlight and tie the knot that binds fabric and will.
+      </p>
+      <p class="badge">🏅 Badge: Initiate’s Knot</p>
+    </section>
+
+    <hr style="margin: 2em 0; border: none; border-top: 1px dashed #c7b297;">
+
+    <section id="quest2">
+      <h1 class="quest-title">🪢 Quest 2: Sacred Edge Binding</h1>
+      <p class="quest-desc">
+        Learn the whipstitch, the ancient edge-binding that guards garments from unraveling chaos.
+      </p>
+      <p class="badge">🏅 Badge: Edgewarden</p>
+    </section>
+
+    <!-- Future sections can be added below -->
+  </div>
+</body>
+</html>
