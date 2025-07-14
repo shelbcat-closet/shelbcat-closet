@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fantasy2K Starter Kit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Baloo 2', sans-serif; }
+    .hdr { font-family: 'Great Vibes', cursive; }
+    .sparkle {
+      animation: sparkle 2s infinite ease-in-out;
+    }
+    @keyframes sparkle {
+      0%,100% { opacity: 0.6; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-4px); }
+    }
+  </style>
+</head>
+<body class="bg-mint-200 min-h-screen flex items-center justify-center p-6">
+  <div class="max-w-md w-full space-y-6">
+
+    <!-- Header -->
+    <h1 class="hdr text-4xl text-pink-600 text-center">🪄 Stitch Academy</h1>
+
+    <!-- Chibi Start Button -->
+    <button class="relative bg-pink-300 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:brightness-110 hover:scale-105 transition">
+      <span class="absolute top-0 right-0 sparkle">✨</span>
+      Begin Quest
+    </button>
+
+    <!-- Sticker-Style Quest Card -->
+    <div class="bg-lavender-200 rounded-xl p-4 shadow-lg relative">
+      <div class="absolute -top-4 -right-4 text-4xl sparkle">⭐</div>
+      <h2 class="hdr text-2xl text-pink-600 mb-2">Quest: Sew the Magic Patch</h2>
+      <p>Create a pastel badge using satin stitch and chibi faces!</p>
+      <button class="mt-4 bg-mint-200 text-pink-700 py-2 px-4 rounded hover:bg-mint-300 shadow transition">Start Lesson</button>
+    </div>
+
+  </div>
+</body>
+</html>
