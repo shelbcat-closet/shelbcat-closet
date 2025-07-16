@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artisan's Digital Grimoire</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Griffy:wght@400;600&family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Griffy', system-ui;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8d5b7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 165, 0, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        .particle:nth-child(2n) {
+            background: rgba(138, 43, 226, 0.4);
+            animation-duration: 20s;
+        }
+        
+        .particle:nth-child(3n) {
+            background: rgba(50, 205, 50, 0.3);
+            animation-duration: 25s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 165, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 165, 0, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 165, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #b8a082;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #d4c4a8;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Game Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .game-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid rgba(138, 43, 226, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 165, 0, 0.8);
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.3);
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6b35, #8a2be2, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
+        }
+        
+        .game-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(45deg, #ff6b35, #8a2be2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.4);
+        }
+        
+        .game-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ff6b35;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .game-description {
+            color: #d4c4a8;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .game-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, rgba(255, 165, 0, 0.2), rgba(138, 43, 226, 0.2));
+            border: 2px solid rgba(255, 165, 0, 0.5);
+            border-radius: 25px;
+            color: #ff6b35;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .game-link:hover {
+            background: linear-gradient(45deg, rgba(255, 165, 0, 0.3), rgba(138, 43, 226, 0.3));
+            border-color: rgba(255, 165, 0, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer p {
+            color: #b8a082;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+        
+        /* Glowing accents */
+        .glow-accent {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 165, 0, 0.3), transparent);
+            border-radius: 50%;
+            animation: pulse 4s infinite;
+            pointer-events: none;
+        }
+        
+        .glow-accent:nth-child(2) {
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.2), transparent);
+            animation-delay: 2s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.6;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+    </div>
+    
+    <!-- Glowing accents -->
+    <div class="glow-accent" style="top: 10%; left: 5%;"></div>
+    <div class="glow-accent" style="top: 60%; right: 10%;"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="title">The Artisan's Digital Grimoire</h1>
+            <p class="subtitle">Where Ancient Crafts Meet Cyber Magic</p>
+            <p class="description">
+                Welcome to the mystical realm where needlework becomes adventure! 
+                Discover enchanted learning experiences that transform traditional crafts 
+                into epic quests. Each game is a spell woven with code, designed to guide 
+                you through the sacred arts of creation.
+            </p>
+        </header>
+        
+        <main class="games-grid">
+            <div class="game-card">
+                <div class="game-icon">🧵</div>
+                <h3 class="game-title">Stitch Quest Chronicles</h3>
+                <p class="game-description">
+                    Embark on a magical journey through the fundamentals of sewing. 
+                    Learn basic stitches while collecting mystical threads and unlocking 
+                    new crafting abilities in this interactive adventure.
+                </p>
+                <a href="#" class="game-link">Enter the Realm</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🪡</div>
+                <h3 class="game-title">Needle & Circuit</h3>
+                <p class="game-description">
+                    Master the art of embroidery in this cyber-medieval workshop. 
+                    Design glowing patterns while learning traditional techniques 
+                    enhanced with digital magic.
+                </p>
+                <a href="#" class="game-link">Begin Training</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🧶</div>
+                <h3 class="game-title">Crochet Codex</h3>
+                <p class="game-description">
+                    Unlock the secrets of the ancient hook arts. Create mystical 
+                    amigurumi creatures and enchanted garments in this spellbinding 
+                    crochet adventure.
+                </p>
+                <a href="#" class="game-link">Cast Your First Spell</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">✂️</div>
+                <h3 class="game-title">Pattern Realm</h3>
+                <p class="game-description">
+                    Decode the mysteries of pattern reading and fabric cutting. 
+                    Navigate through geometric puzzles and transform flat designs 
+                    into dimensional treasures.
+                </p>
+                <a href="#" class="game-link">Explore Patterns</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🌿</div>
+                <h3 class="game-title">Herbalist's Toolkit</h3>
+                <p class="game-description">
+                    Craft magical potions and remedies while learning about 
+                    natural dyes and fabric treatments. Blend ancient wisdom 
+                    with modern techniques.
+                </p>
+                <a href="#" class="game-link">Gather Ingredients</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">⚡</div>
+                <h3 class="game-title">Artisan's Arsenal</h3>
+                <p class="game-description">
+                    Master your crafting tools in this comprehensive workshop. 
+                    Learn about different implements and their magical properties 
+                    in interactive challenges.
+                </p>
+                <a href="#" class="game-link">Forge Your Path</a>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>✨ Crafted with love, magic, and sustainable code ✨</p>
+            <p>May your stitches be straight and your creativity boundless</p>
+        </footer>
+    </div>
+</body>
+</html>
