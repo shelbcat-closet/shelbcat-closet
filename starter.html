@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fantasy2K Stitch Academy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+    }
+    h1, h2, .fancy {
+      font-family: 'Cinzel Decorative', cursive;
+    }
+    .rune-glow {
+      animation: glow 2s infinite ease-in-out;
+    }
+    @keyframes glow {
+      0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 5px #f0abfc); }
+      50% { opacity: 1; filter: drop-shadow(0 0 10px #facc15); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#e5e5f7] to-[#f0abfc] text-[#3b0764] min-h-screen p-6">
+
+  <!-- Header -->
+  <header class="text-center mb-10">
+    <h1 class="text-5xl fancy text-[#c084fc] rune-glow">✨ Stitch Academy ✨</h1>
+    <p class="mt-2 text-lg">Embark on a magical sewing journey through time and threads</p>
+  </header>
+
+  <!-- Main Layout -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+    <!-- Sidebar -->
+    <aside class="bg-white/70 backdrop-blur-md rounded-2xl p-4 shadow-xl md:col-span-1">
+      <h2 class="fancy text-2xl mb-4">🔮 Realms</h2>
+      <ul class="space-y-2">
+        <li><a href="#" class="block p-2 rounded-lg hover:bg-[#facc15]/20">🌿 Enchanted Basics</a></li>
+        <li><a href="#" class="block p-2 rounded-lg hover:bg-[#facc15]/20">🧵 Threads & Tools</a></li>
+        <li><a href="#" class="block p-2 rounded-lg hover:bg-[#facc15]/20">📜 Quests</a></li>
+        <li><a href="#" class="block p-2 rounded-lg hover:bg-[#facc15]/20">✨ Rewards</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:col-span-3 space-y-6">
+
+      <!-- Quest Card -->
+      <section class="bg-white/80 backdrop-blur-md rounded-xl p-6 shadow-lg">
+        <h2 class="fancy text-3xl text-[#38bdf8] mb-2">🧵 Quest: Bind the Cosmic Hem</h2>
+        <p>Master the whipstitch and seal the seams of the realm. Gather: thread, needle, thimble.</p>
+        <button class="mt-4 bg-[#c084fc] hover:bg-[#a855f7] text-white font-bold py-2 px-4 rounded-full shadow-md transition">
+          Begin Quest
+        </button>
+      </section>
+
+      <!-- Additional Panel -->
+      <section class="bg-gradient-to-r from-[#a7f3d0] to-[#c084fc]/60 rounded-xl p-6 text-white shadow-inner">
+        <h3 class="text-xl font-bold mb-1">🧚 Tip from the Rune Loom</h3>
+        <p>Use a needle with a larger eye when working with glitter threads to prevent fraying.</p>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>
