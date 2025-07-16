@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artisan's Digital Grimoire</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #2a1a3e 0%, #3d2a5e 30%, #1a2a4e 70%, #0f2460 100%);
+            color: #f0e6ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 182, 193, 0.8);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+            box-shadow: 0 0 10px rgba(255, 182, 193, 0.6);
+        }
+        
+        .particle:nth-child(2n) {
+            background: rgba(221, 160, 221, 0.7);
+            animation-duration: 20s;
+            box-shadow: 0 0 10px rgba(221, 160, 221, 0.5);
+        }
+        
+        .particle:nth-child(3n) {
+            background: rgba(255, 218, 185, 0.6);
+            animation-duration: 25s;
+            box-shadow: 0 0 10px rgba(255, 218, 185, 0.4);
+        }
+        
+        .particle:nth-child(4n) {
+            background: rgba(173, 216, 230, 0.7);
+            animation-duration: 18s;
+            box-shadow: 0 0 10px rgba(173, 216, 230, 0.5);
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 192, 203, 0.1);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 182, 193, 0.4);
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.2);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 182, 193, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff69b4, #ff1493, #da70d6, #ba55d3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #e6b3ff;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #f0e6ff;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Game Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .game-card {
+            background: rgba(255, 192, 203, 0.08);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(221, 160, 221, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 16px rgba(255, 182, 193, 0.1);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 105, 180, 0.8);
+            box-shadow: 0 12px 40px rgba(255, 105, 180, 0.3);
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff69b4, #da70d6, #ba55d3, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
+        }
+        
+        .game-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(45deg, #ff69b4, #da70d6, #ba55d3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
+            animation: gentle-pulse 3s infinite;
+        }
+        
+        @keyframes gentle-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 25px rgba(255, 105, 180, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 35px rgba(255, 105, 180, 0.7);
+            }
+        }
+        
+        .game-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ff69b4;
+            margin-bottom: 1rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+        }
+        
+        .game-description {
+            color: #f0e6ff;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .game-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.2), rgba(218, 112, 214, 0.2));
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 30px;
+            color: #ff69b4;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+        
+        .game-link:hover {
+            background: linear-gradient(45deg, rgba(255, 105, 180, 0.3), rgba(218, 112, 214, 0.3));
+            border-color: rgba(255, 105, 180, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(255, 192, 203, 0.08);
+            border-radius: 20px;
+            border: 1px solid rgba(221, 160, 221, 0.3);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 16px rgba(255, 182, 193, 0.1);
+        }
+        
+        .footer p {
+            color: #e6b3ff;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+        
+        /* Glowing accents */
+        .glow-accent {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.3), transparent);
+            border-radius: 50%;
+            animation: pulse 4s infinite;
+            pointer-events: none;
+        }
+        
+        .glow-accent:nth-child(2) {
+            background: radial-gradient(circle, rgba(218, 112, 214, 0.25), transparent);
+            animation-delay: 2s;
+        }
+        
+        .glow-accent:nth-child(3) {
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.2), transparent);
+            animation-delay: 1s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.6;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+    </div>
+    
+    <!-- Glowing accents -->
+    <div class="glow-accent" style="top: 10%; left: 5%;"></div>
+    <div class="glow-accent" style="top: 60%; right: 10%;"></div>
+    <div class="glow-accent" style="top: 30%; right: 20%;"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="title">The Kawaii Craft Codex ✨</h1>
+            <p class="subtitle">Where Cozy Magic Meets Cyber Cuteness</p>
+            <p class="description">
+                Welcome to the most adorable realm of crafting adventures! 💖 
+                Step into a world where every stitch sparkles with kawaii energy and 
+                traditional crafts become magical girl quests. Each game is lovingly 
+                crafted to make learning feel like playing with your favorite toys! ✨
+            </p>
+        </header>
+        
+        <main class="games-grid">
+            <div class="game-card">
+                <div class="game-icon">🧵</div>
+                <h3 class="game-title">Stitch Princess Academy</h3>
+                <p class="game-description">
+                    Join our magical sewing school where every basic stitch unlocks 
+                    a new power! Collect sparkly threads, befriend needle familiars, 
+                    and become the ultimate crafting magical girl! ✨
+                </p>
+                <a href="#" class="game-link">Start Your Journey! 💖</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🪡</div>
+                <h3 class="game-title">Embroidery Dreamland</h3>
+                <p class="game-description">
+                    Design the cutest embroidered creatures in this pastel paradise! 
+                    Learn traditional stitches while creating kawaii characters that 
+                    come to life with holographic magic! 🌈
+                </p>
+                <a href="#" class="game-link">Enter Dreamland! ✨</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🧶</div>
+                <h3 class="game-title">Crochet Café Chronicles</h3>
+                <p class="game-description">
+                    Run the most adorable yarn café in cyberspace! Crochet cute 
+                    amigurumi treats and cozy accessories for your digital customers 
+                    in this heartwarming adventure! 🍰
+                </p>
+                <a href="#" class="game-link">Open Your Café! 🌸</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">✂️</div>
+                <h3 class="game-title">Pattern Puzzle Palace</h3>
+                <p class="game-description">
+                    Solve the sweetest geometric puzzles in this candy-colored castle! 
+                    Master pattern reading through mini-games that feel like playing 
+                    with holographic origami! 🏰
+                </p>
+                <a href="#" class="game-link">Solve & Sparkle! 💎</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">🌿</div>
+                <h3 class="game-title">Fairy Garden Dyes</h3>
+                <p class="game-description">
+                    Grow your own magical dye garden! Learn about natural fabric 
+                    treatments while tending to glowing plants and brewing the most 
+                    adorable color potions! 🧚‍♀️
+                </p>
+                <a href="#" class="game-link">Plant Magic! 🌺</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-icon">⚡</div>
+                <h3 class="game-title">Crafty Tool Academy</h3>
+                <p class="game-description">
+                    Meet your new tool friends in this kawaii workshop! Each crafting 
+                    implement has its own personality and special abilities. 
+                    Unlock their secrets through fun challenges! 🔧
+                </p>
+                <a href="#" class="game-link">Meet Your Tools! 🎀</a>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>💖 Crafted with love, sparkles, and sustainable kawaii code 💖</p>
+            <p>May your stitches be as cute as your dreams are bright! ✨🌸✨</p>
+        </footer>
+    </div>
+</body>
+</html>
