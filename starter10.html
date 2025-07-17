@@ -42,13 +42,8 @@
         }
 
         @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.3;
-            }
-
-            50% {
-                opacity: 1;
-            }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
         /* Glowing orbs */
@@ -88,13 +83,8 @@
         }
 
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-20px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
 
         /* Main container */
@@ -128,17 +118,9 @@
         }
 
         @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .subtitle {
@@ -224,13 +206,8 @@
         }
 
         @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .quest-title {
@@ -347,13 +324,8 @@
         }
 
         @keyframes progressShine {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         /* Responsive design */
@@ -361,79 +333,79 @@
             .container {
                 padding: 15px;
             }
-
+            
             .title {
                 font-size: 2.5rem;
                 line-height: 1.2;
             }
-
+            
             .subtitle {
                 font-size: 1rem;
                 margin-bottom: 20px;
             }
-
+            
             .crystal-nav {
                 gap: 10px;
                 margin-bottom: 30px;
             }
-
+            
             .crystal-btn {
                 width: 80px;
                 height: 45px;
                 font-size: 0.8rem;
                 padding: 5px;
             }
-
+            
             .quest-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-
+            
             .quest-section {
                 padding: 20px;
                 margin-bottom: 30px;
             }
-
+            
             .quest-title {
                 font-size: 1.5rem;
             }
-
+            
             .quest-subtitle {
                 font-size: 1rem;
             }
-
+            
             .quest-card {
                 padding: 15px;
             }
-
+            
             .quest-card h3 {
                 font-size: 1.1rem;
             }
-
+            
             .quest-card p {
                 font-size: 0.9rem;
             }
         }
-
+        
         @media (max-width: 480px) {
             .title {
                 font-size: 2rem;
             }
-
+            
             .crystal-nav {
                 gap: 8px;
             }
-
+            
             .crystal-btn {
                 width: 70px;
                 height: 40px;
                 font-size: 0.7rem;
             }
-
+            
             .quest-section {
                 padding: 15px;
             }
-
+            
             .quest-title {
                 font-size: 1.3rem;
             }
@@ -565,271 +537,205 @@
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
-            color: white;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px #ff6b9d;
-            user-select: none;
         }
 
         .game-card:hover .play-overlay {
             opacity: 1;
         }
 
-        /* Locked card overlay */
-        .quest-card.locked {
-            cursor: default;
-            filter: grayscale(80%) brightness(50%);
-            position: relative;
+        .play-button {
+            font-family: 'Griffy', cursive;
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            animation: pulse 2s infinite;
         }
 
-        .quest-card.locked::after {
-            content: '🔒 Locked';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #ff6b9d;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-shadow: 0 0 10px #ff6b9d;
-            pointer-events: none;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Locked game styles */
+        .quest-card.locked {
+            opacity: 0.6;
+            cursor: default;
+            border-color: rgba(128, 128, 128, 0.4);
+        }
+
+        .quest-card.locked:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .locked-text {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <!-- Animated stars -->
-    <div class="stars" aria-hidden="true">
-        <!-- 60 stars randomly placed -->
-        <script>
-            // Generate 60 stars with random positions and animation delays
-            for (let i = 0; i < 60; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.top = Math.random() * 100 + 'vh';
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.animationDelay = (Math.random() * 3) + 's';
-                document.body.appendChild(star);
-            }
-        </script>
+    <div class="stars">
+        <!-- Randomly placed stars -->
+        <div class="star" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
+        <div class="star" style="top: 50%; left: 30%; animation-delay: 1s;"></div>
+        <div class="star" style="top: 70%; left: 70%; animation-delay: 2s;"></div>
+        <div class="star" style="top: 40%; left: 80%; animation-delay: 3s;"></div>
+        <div class="star" style="top: 20%; left: 60%; animation-delay: 4s;"></div>
     </div>
-    <!-- Glowing orbs -->
-    <div class="orb orb1" aria-hidden="true"></div>
-    <div class="orb orb2" aria-hidden="true"></div>
-    <div class="orb orb3" aria-hidden="true"></div>
 
-    <div class="container" role="main">
-        <header class="header" role="banner">
-            <h1 class="title" aria-label="Craft Closet Academy">🌸 Craft Closet Academy</h1>
-            <p class="subtitle">Learn the Art of Sewing & Crochet</p>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🌸 Craft Closet Academy</h1>
+            <p class="subtitle">Learn sewing and crochet the magical way!</p>
+            <nav class="crystal-nav" role="navigation" aria-label="Crystal navigation">
+                <button class="crystal-btn">🟣 Crystal 1</button>
+                <button class="crystal-btn">🔮 Crystal 2</button>
+                <button class="crystal-btn">💜 Crystal 3</button>
+                <button class="crystal-btn">✨ Crystal 4</button>
+            </nav>
         </header>
 
-        <nav class="crystal-nav" aria-label="Navigation crystals">
-            <button class="crystal-btn" aria-pressed="false" tabindex="0">Sewing</button>
-            <button class="crystal-btn" aria-pressed="false" tabindex="0">Crochet</button>
-            <button class="crystal-btn" aria-pressed="false" tabindex="0">Embroidery</button>
-            <button class="crystal-btn" aria-pressed="false" tabindex="0">Pattern Making</button>
-        </nav>
-
-        <section class="quest-section" aria-labelledby="level1-title">
-            <h2 id="level1-title" class="quest-title">Level 1: Basics</h2>
-            <p class="quest-subtitle">Get started with the fundamentals of sewing and crochet.</p>
+        <!-- Quest section: Sewing Basics -->
+        <section class="quest-section" aria-label="Sewing Basics Quests">
+            <h2 class="quest-title">Sewing Basics</h2>
+            <p class="quest-subtitle">Start your journey with foundational skills.</p>
             <div class="quest-grid">
-                <div class="quest-card game-card" data-game-id="machine-familiar" tabindex="0" role="button" aria-label="Open game: Machine Familiar">
-                    <h3>Machine Familiar</h3>
-                    <p>Learn to thread and operate a sewing machine.</p>
-                    <div class="difficulty">Easy</div>
-                    <div class="play-overlay">▶ Play</div>
+                <div class="quest-card game-card" data-game-id="hand-sewing-level-1">
+                    <h3>Hand Sewing Level 1</h3>
+                    <p>Learn the basics of hand sewing with simple stitches.</p>
+                    <span class="difficulty">Beginner</span>
+                    <div class="play-overlay" aria-hidden="true"><span class="play-button">▶ Play</span></div>
                 </div>
-                <div class="quest-card game-card" data-game-id="five-stitches" tabindex="0" role="button" aria-label="Open game: Five Stitches">
-                    <h3>Five Stitches</h3>
-                    <p>Practice the five essential hand stitches.</p>
-                    <div class="difficulty">Easy</div>
-                    <div class="play-overlay">▶ Play</div>
+
+                <div class="quest-card game-card" data-game-id="threading-the-machine">
+                    <h3>Threading the Machine</h3>
+                    <p>Master threading a sewing machine correctly.</p>
+                    <span class="difficulty">Beginner</span>
+                    <div class="play-overlay" aria-hidden="true"><span class="play-button">▶ Play</span></div>
                 </div>
-                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
-                    <h3>Buttonholes</h3>
-                    <p>Master the art of buttonholes.</p>
-                    <div class="difficulty">Locked</div>
-                </div>
-                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
-                    <h3>Zippers</h3>
-                    <p>Learn how to insert zippers.</p>
-                    <div class="difficulty">Locked</div>
+
+                <div class="quest-card locked">
+                    <h3>Running Stitch</h3>
+                    <p>Practice the running stitch by stitching along a line.</p>
+                    <span class="difficulty">Beginner</span>
+                    <p class="locked-text">Unlock after previous quests.</p>
                 </div>
             </div>
         </section>
 
-        <section class="quest-section" aria-labelledby="level2-title">
-            <h2 id="level2-title" class="quest-title">Level 2: Intermediate</h2>
-            <p class="quest-subtitle">Build on your skills with intermediate techniques.</p>
+        <!-- Quest section: Crochet Basics -->
+        <section class="quest-section" aria-label="Crochet Basics Quests">
+            <h2 class="quest-title">Crochet Basics</h2>
+            <p class="quest-subtitle">Get comfortable with yarn and hook.</p>
             <div class="quest-grid">
-                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
-                    <h3>Quilting</h3>
-                    <p>Create beautiful quilt patterns.</p>
-                    <div class="difficulty">Locked</div>
+                <div class="quest-card locked">
+                    <h3>Chain Stitch</h3>
+                    <p>Learn to make the foundation chain.</p>
+                    <span class="difficulty">Beginner</span>
+                    <p class="locked-text">Unlock after previous quests.</p>
                 </div>
-                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
-                    <h3>Advanced Crochet</h3>
-                    <p>Learn complex crochet stitches.</p>
-                    <div class="difficulty">Locked</div>
-                </div>
-            </div>
-        </section>
 
-        <section class="quest-section" aria-labelledby="level3-title">
-            <h2 id="level3-title" class="quest-title">Level 3: Advanced</h2>
-            <p class="quest-subtitle">Challenge yourself with advanced projects.</p>
-            <div class="quest-grid">
-                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
-                    <h3>Custom Patterns</h3>
-                    <p>Design your own patterns.</p>
-                    <div class="difficulty">Locked</div>
-                </div>
-                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
-                    <h3>Fashion Sewing</h3>
-                    <p>Make your own clothes.</p>
-                    <div class="difficulty">Locked</div>
+                <div class="quest-card locked">
+                    <h3>Single Crochet</h3>
+                    <p>Practice the single crochet stitch.</p>
+                    <span class="difficulty">Beginner</span>
+                    <p class="locked-text">Unlock after previous quests.</p>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- Game modal -->
-    <div class="game-modal" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <!-- Game Modal -->
+    <div class="game-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle" class="modal-title">Game Title</h2>
-                <button class="close-btn" aria-label="Close game modal" id="closeModalBtn">&times;</button>
-            </div>
+            <header class="modal-header">
+                <h2 class="modal-title" id="modal-title">Game Title</h2>
+                <button class="close-btn" aria-label="Close modal">&times;</button>
+            </header>
             <div class="game-container">
-                <div class="game-frame" id="gameFrame">
-                    <!-- Iframe will be inserted here -->
+                <div class="game-frame">
+                    <!-- iframe for game will be inserted here -->
+                    <iframe id="game-iframe" src="" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <div class="game-instructions" id="gameInstructions">
+                <div class="game-instructions" id="game-instructions">
                     <h3>Instructions</h3>
-                    <p id="instructionsText">Game instructions will appear here.</p>
+                    <p>Select a game from the quests to start playing. Instructions will appear here.</p>
                 </div>
-            </div>
-            <div class="game-controls" style="padding: 0 30px 30px;">
-                <button class="crystal-btn small" id="restartBtn">Restart</button>
-                <button class="crystal-btn small" id="returnBtn">Return to Game List</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Game data
-        const games = {
-            'machine-familiar': {
-                title: "Machine Familiar",
-                instructions: "Learn how to thread and operate a sewing machine safely. Use arrow keys to navigate menus.",
-                iframeSrc: "https://scratch.mit.edu/projects/725372231/embed"
+        // Map of game IDs to their iframe src and instructions
+        const gameData = {
+            "hand-sewing-level-1": {
+                title: "Hand Sewing Level 1",
+                src: "https://scratch.mit.edu/projects/833668569/embed",
+                instructions: "Learn the basics of hand sewing with simple stitches."
             },
-            'five-stitches': {
-                title: "Five Stitches",
-                instructions: "Practice the five essential hand stitches: running, backstitch, whipstitch, blanket, and slip stitch.",
-                iframeSrc: "https://scratch.mit.edu/projects/726134637/embed"
+            "threading-the-machine": {
+                title: "Threading the Machine",
+                src: "https://scratch.mit.edu/projects/834182970/embed",
+                instructions: "Master threading a sewing machine correctly."
             }
+            // Add other games as needed
         };
 
-        const modal = document.getElementById('gameModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const instructionsText = document.getElementById('instructionsText');
-        const gameFrame = document.getElementById('gameFrame');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        const returnBtn = document.getElementById('returnBtn');
+        const modal = document.querySelector('.game-modal');
+        const closeBtn = modal.querySelector('.close-btn');
+        const modalTitle = modal.querySelector('.modal-title');
+        const gameIframe = document.getElementById('game-iframe');
+        const instructions = document.getElementById('game-instructions').querySelector('p');
 
-        function openGameModal(gameId) {
-            const game = games[gameId];
-            if (!game) return;
-
-            modalTitle.textContent = game.title;
-            instructionsText.textContent = game.instructions;
-
-            gameFrame.innerHTML = `<iframe src="${game.iframeSrc}" allowfullscreen allow="autoplay; encrypted-media" frameborder="0"></iframe>`;
-
+        // Open modal function
+        function openModal(gameId) {
+            if (!gameData[gameId]) return; // No game data found
+            modalTitle.textContent = gameData[gameId].title;
+            gameIframe.src = gameData[gameId].src;
+            instructions.textContent = gameData[gameId].instructions;
             modal.style.display = 'block';
+            modal.focus();
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
         }
 
-        function closeGameModal() {
+        // Close modal function
+        function closeModal() {
             modal.style.display = 'none';
-            gameFrame.innerHTML = '';
+            gameIframe.src = ''; // Stop the game when modal closes
+            document.body.style.overflow = ''; // Restore scroll
         }
 
-        function restartGame() {
-            // Reload iframe to restart game
-            const iframe = gameFrame.querySelector('iframe');
-            if (iframe) {
-                iframe.src = iframe.src;
-            }
-        }
+        // Event listener for quest cards
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const gameId = card.getAttribute('data-game-id');
+                openModal(gameId);
+            });
+        });
 
-        function returnToGameList() {
-            closeGameModal();
-        }
+        // Close modal on close button click
+        closeBtn.addEventListener('click', closeModal);
 
-        function showLockedMessage() {
-            alert("This game is currently locked. Complete previous levels to unlock.");
-        }
-
-        // Event Listeners
-        closeModalBtn.addEventListener('click', closeGameModal);
-        restartBtn.addEventListener('click', restartGame);
-        returnBtn.addEventListener('click', returnToGameList);
-
-        // Close modal on outside click
-        window.addEventListener('click', (e) => {
+        // Close modal on click outside modal content
+        modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                closeGameModal();
+                closeModal();
             }
         });
 
-        // Accessibility: Close modal on Escape key
-        window.addEventListener('keydown', (e) => {
+        // Close modal on pressing Escape key
+        document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.style.display === 'block') {
-                closeGameModal();
+                closeModal();
             }
-        });
-
-        // Add click listeners for unlocked game cards and locked cards AFTER DOM content is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            const gameCards = document.querySelectorAll('.quest-card.game-card:not(.locked)');
-            gameCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const gameId = card.getAttribute('data-game-id');
-                    if (gameId) {
-                        openGameModal(gameId);
-                    }
-                });
-                // Add keyboard accessibility: open modal on Enter or Space
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        const gameId = card.getAttribute('data-game-id');
-                        if (gameId) {
-                            openGameModal(gameId);
-                        }
-                    }
-                });
-            });
-
-            const lockedCards = document.querySelectorAll('.quest-card.locked');
-            lockedCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    showLockedMessage();
-                });
-                // Keyboard accessibility for locked cards
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        showLockedMessage();
-                    }
-                });
-            });
         });
     </script>
 </body>
