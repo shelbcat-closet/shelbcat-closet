@@ -564,4 +564,273 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition
+            transition: opacity 0.3s ease;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px #ff6b9d;
+            user-select: none;
+        }
+
+        .game-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        /* Locked card overlay */
+        .quest-card.locked {
+            cursor: default;
+            filter: grayscale(80%) brightness(50%);
+            position: relative;
+        }
+
+        .quest-card.locked::after {
+            content: '🔒 Locked';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff6b9d;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px #ff6b9d;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated stars -->
+    <div class="stars" aria-hidden="true">
+        <!-- 60 stars randomly placed -->
+        <script>
+            // Generate 60 stars with random positions and animation delays
+            for (let i = 0; i < 60; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.animationDelay = (Math.random() * 3) + 's';
+                document.body.appendChild(star);
+            }
+        </script>
+    </div>
+    <!-- Glowing orbs -->
+    <div class="orb orb1" aria-hidden="true"></div>
+    <div class="orb orb2" aria-hidden="true"></div>
+    <div class="orb orb3" aria-hidden="true"></div>
+
+    <div class="container" role="main">
+        <header class="header" role="banner">
+            <h1 class="title" aria-label="Craft Closet Academy">🌸 Craft Closet Academy</h1>
+            <p class="subtitle">Learn the Art of Sewing & Crochet</p>
+        </header>
+
+        <nav class="crystal-nav" aria-label="Navigation crystals">
+            <button class="crystal-btn" aria-pressed="false" tabindex="0">Sewing</button>
+            <button class="crystal-btn" aria-pressed="false" tabindex="0">Crochet</button>
+            <button class="crystal-btn" aria-pressed="false" tabindex="0">Embroidery</button>
+            <button class="crystal-btn" aria-pressed="false" tabindex="0">Pattern Making</button>
+        </nav>
+
+        <section class="quest-section" aria-labelledby="level1-title">
+            <h2 id="level1-title" class="quest-title">Level 1: Basics</h2>
+            <p class="quest-subtitle">Get started with the fundamentals of sewing and crochet.</p>
+            <div class="quest-grid">
+                <div class="quest-card game-card" data-game-id="machine-familiar" tabindex="0" role="button" aria-label="Open game: Machine Familiar">
+                    <h3>Machine Familiar</h3>
+                    <p>Learn to thread and operate a sewing machine.</p>
+                    <div class="difficulty">Easy</div>
+                    <div class="play-overlay">▶ Play</div>
+                </div>
+                <div class="quest-card game-card" data-game-id="five-stitches" tabindex="0" role="button" aria-label="Open game: Five Stitches">
+                    <h3>Five Stitches</h3>
+                    <p>Practice the five essential hand stitches.</p>
+                    <div class="difficulty">Easy</div>
+                    <div class="play-overlay">▶ Play</div>
+                </div>
+                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
+                    <h3>Buttonholes</h3>
+                    <p>Master the art of buttonholes.</p>
+                    <div class="difficulty">Locked</div>
+                </div>
+                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
+                    <h3>Zippers</h3>
+                    <p>Learn how to insert zippers.</p>
+                    <div class="difficulty">Locked</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quest-section" aria-labelledby="level2-title">
+            <h2 id="level2-title" class="quest-title">Level 2: Intermediate</h2>
+            <p class="quest-subtitle">Build on your skills with intermediate techniques.</p>
+            <div class="quest-grid">
+                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
+                    <h3>Quilting</h3>
+                    <p>Create beautiful quilt patterns.</p>
+                    <div class="difficulty">Locked</div>
+                </div>
+                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
+                    <h3>Advanced Crochet</h3>
+                    <p>Learn complex crochet stitches.</p>
+                    <div class="difficulty">Locked</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quest-section" aria-labelledby="level3-title">
+            <h2 id="level3-title" class="quest-title">Level 3: Advanced</h2>
+            <p class="quest-subtitle">Challenge yourself with advanced projects.</p>
+            <div class="quest-grid">
+                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
+                    <h3>Custom Patterns</h3>
+                    <p>Design your own patterns.</p>
+                    <div class="difficulty">Locked</div>
+                </div>
+                <div class="quest-card locked" tabindex="0" role="button" aria-label="Locked game">
+                    <h3>Fashion Sewing</h3>
+                    <p>Make your own clothes.</p>
+                    <div class="difficulty">Locked</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Game modal -->
+    <div class="game-modal" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" class="modal-title">Game Title</h2>
+                <button class="close-btn" aria-label="Close game modal" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="game-container">
+                <div class="game-frame" id="gameFrame">
+                    <!-- Iframe will be inserted here -->
+                </div>
+                <div class="game-instructions" id="gameInstructions">
+                    <h3>Instructions</h3>
+                    <p id="instructionsText">Game instructions will appear here.</p>
+                </div>
+            </div>
+            <div class="game-controls" style="padding: 0 30px 30px;">
+                <button class="crystal-btn small" id="restartBtn">Restart</button>
+                <button class="crystal-btn small" id="returnBtn">Return to Game List</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const games = {
+            'machine-familiar': {
+                title: "Machine Familiar",
+                instructions: "Learn how to thread and operate a sewing machine safely. Use arrow keys to navigate menus.",
+                iframeSrc: "https://scratch.mit.edu/projects/725372231/embed"
+            },
+            'five-stitches': {
+                title: "Five Stitches",
+                instructions: "Practice the five essential hand stitches: running, backstitch, whipstitch, blanket, and slip stitch.",
+                iframeSrc: "https://scratch.mit.edu/projects/726134637/embed"
+            }
+        };
+
+        const modal = document.getElementById('gameModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const instructionsText = document.getElementById('instructionsText');
+        const gameFrame = document.getElementById('gameFrame');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const returnBtn = document.getElementById('returnBtn');
+
+        function openGameModal(gameId) {
+            const game = games[gameId];
+            if (!game) return;
+
+            modalTitle.textContent = game.title;
+            instructionsText.textContent = game.instructions;
+
+            gameFrame.innerHTML = `<iframe src="${game.iframeSrc}" allowfullscreen allow="autoplay; encrypted-media" frameborder="0"></iframe>`;
+
+            modal.style.display = 'block';
+        }
+
+        function closeGameModal() {
+            modal.style.display = 'none';
+            gameFrame.innerHTML = '';
+        }
+
+        function restartGame() {
+            // Reload iframe to restart game
+            const iframe = gameFrame.querySelector('iframe');
+            if (iframe) {
+                iframe.src = iframe.src;
+            }
+        }
+
+        function returnToGameList() {
+            closeGameModal();
+        }
+
+        function showLockedMessage() {
+            alert("This game is currently locked. Complete previous levels to unlock.");
+        }
+
+        // Event Listeners
+        closeModalBtn.addEventListener('click', closeGameModal);
+        restartBtn.addEventListener('click', restartGame);
+        returnBtn.addEventListener('click', returnToGameList);
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeGameModal();
+            }
+        });
+
+        // Accessibility: Close modal on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeGameModal();
+            }
+        });
+
+        // Add click listeners for unlocked game cards and locked cards AFTER DOM content is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameCards = document.querySelectorAll('.quest-card.game-card:not(.locked)');
+            gameCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const gameId = card.getAttribute('data-game-id');
+                    if (gameId) {
+                        openGameModal(gameId);
+                    }
+                });
+                // Add keyboard accessibility: open modal on Enter or Space
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const gameId = card.getAttribute('data-game-id');
+                        if (gameId) {
+                            openGameModal(gameId);
+                        }
+                    }
+                });
+            });
+
+            const lockedCards = document.querySelectorAll('.quest-card.locked');
+            lockedCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    showLockedMessage();
+                });
+                // Keyboard accessibility for locked cards
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showLockedMessage();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
