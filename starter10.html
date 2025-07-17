@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌸 Craft Closet Academy</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Griffy&family=Modern+Antiqua&family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap');
@@ -560,183 +560,442 @@
         /* Locked game styles */
         .quest-card.locked {
             opacity: 0.6;
-            cursor: default;
-            border-color: rgba(128, 128, 128, 0.4);
+            cursor: not-allowed;
         }
 
-        .quest-card.locked:hover {
-            transform: none;
-            box-shadow: none;
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(138, 43, 226, 0.3));
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
         }
 
-        .locked-text {
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 10px;
-            font-style: italic;
+        .lock-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .unlock-text {
+            font-family: 'Griffy', cursive;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        /* Mobile responsiveness for modal */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 98%;
+                height: 95%;
+                margin: 1% auto;
+            }
+            
+            .game-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .game-frame {
+                flex: none;
+                height: 60%;
+            }
+            
+            .game-instructions {
+                flex: none;
+                height: 35%;
+            }
+            
+            .modal-title {
+                font-size: 1.4rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="stars">
-        <!-- Randomly placed stars -->
-        <div class="star" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
-        <div class="star" style="top: 50%; left: 30%; animation-delay: 1s;"></div>
-        <div class="star" style="top: 70%; left: 70%; animation-delay: 2s;"></div>
-        <div class="star" style="top: 40%; left: 80%; animation-delay: 3s;"></div>
-        <div class="star" style="top: 20%; left: 60%; animation-delay: 4s;"></div>
-    </div>
-
+    <!-- Animated background -->
+    <div class="stars"></div>
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
     <div class="orb orb3"></div>
 
     <div class="container">
         <header class="header">
-            <h1 class="title">🌸 Craft Closet Academy</h1>
-            <p class="subtitle">Learn sewing and crochet the magical way!</p>
-            <nav class="crystal-nav" role="navigation" aria-label="Crystal navigation">
-                <button class="crystal-btn">🟣 Crystal 1</button>
-                <button class="crystal-btn">🔮 Crystal 2</button>
-                <button class="crystal-btn">💜 Crystal 3</button>
-                <button class="crystal-btn">✨ Crystal 4</button>
-            </nav>
+            <h1 class="title glow">🌸 Kawaii Craft Academy</h1>
+            <p class="subtitle">✨ Where Medieval Craftsmanship Meets Cyber Magic ✨</p>
+            <p class="subtitle">Master the ancient art of sewing through interactive quest-based adventures!</p>
         </header>
 
-        <!-- Quest section: Sewing Basics -->
-        <section class="quest-section" aria-label="Sewing Basics Quests">
-            <h2 class="quest-title">Sewing Basics</h2>
-            <p class="quest-subtitle">Start your journey with foundational skills.</p>
+        <nav class="crystal-nav">
+            <a href="#quests" class="crystal-btn">🎮 Quests</a>
+            <a href="#progress" class="crystal-btn">📊 Progress</a>
+            <a href="#badges" class="crystal-btn">🏆 Badges</a>
+            <a href="#community" class="crystal-btn">👥 Guild</a>
+        </nav>
+
+        <section class="quest-section" id="quests">
+            <h2 class="quest-title">🧵 Current Adventures</h2>
+            <p class="quest-subtitle">Choose your path, young apprentice</p>
+            
             <div class="quest-grid">
-                <div class="quest-card game-card" data-game-id="hand-sewing-level-1">
-                    <h3>Hand Sewing Level 1</h3>
-                    <p>Learn the basics of hand sewing with simple stitches.</p>
-                    <span class="difficulty">Beginner</span>
-                    <div class="play-overlay" aria-hidden="true"><span class="play-button">▶ Play</span></div>
+                <div class="quest-card game-card" onclick="openGameModal('machine-familiar')">
+                    <div class="difficulty">Beginner</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️ PLAY</div>
+                    </div>
+                    <h3>🎯 Meet Your Sewing Machine Familiar</h3>
+                    <p>Embark on your first quest to bond with your magical sewing machine. Learn the sacred art of threading and discover the mystical parts that make the magic happen!</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="quest-card game-card" data-game-id="threading-the-machine">
-                    <h3>Threading the Machine</h3>
-                    <p>Master threading a sewing machine correctly.</p>
-                    <span class="difficulty">Beginner</span>
-                    <div class="play-overlay" aria-hidden="true"><span class="play-button">▶ Play</span></div>
+                <div class="quest-card game-card" onclick="openGameModal('five-stitches')">
+                    <div class="difficulty">Beginner</div>
+                    <div class="play-overlay">
+                        <div class="play-button">▶️ PLAY</div>
+                    </div>
+                    <h3>⚔️ The Fundamental Five Stitches</h3>
+                    <p>Master the five legendary stitches that form the foundation of all sewing magic. Each stitch holds ancient power waiting to be unlocked!</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="quest-card locked">
-                    <h3>Running Stitch</h3>
-                    <p>Practice the running stitch by stitching along a line.</p>
-                    <span class="difficulty">Beginner</span>
-                    <p class="locked-text">Unlock after previous quests.</p>
+                <div class="quest-card game-card locked" onclick="showLockedMessage()">
+                    <div class="difficulty">Intermediate</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="unlock-text">Complete previous quests to unlock</div>
+                    </div>
+                    <h3>🌲 Fabric Forest Expedition</h3>
+                    <p>Venture into the mystical Fabric Forest to discover the properties of different textile realms. From Cotton Kingdom to Polyester Palace!</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quest-card game-card locked" onclick="showLockedMessage()">
+                    <div class="difficulty">Boss Fight</div>
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="unlock-text">Complete previous quests to unlock</div>
+                    </div>
+                    <h3>👜 Simple Tote Bag Creation</h3>
+                    <p>Face your first boss battle! Combine all your learned skills to craft your very first complete project - a magical tote bag!</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Quest section: Crochet Basics -->
-        <section class="quest-section" aria-label="Crochet Basics Quests">
-            <h2 class="quest-title">Crochet Basics</h2>
-            <p class="quest-subtitle">Get comfortable with yarn and hook.</p>
-            <div class="quest-grid">
-                <div class="quest-card locked">
-                    <h3>Chain Stitch</h3>
-                    <p>Learn to make the foundation chain.</p>
-                    <span class="difficulty">Beginner</span>
-                    <p class="locked-text">Unlock after previous quests.</p>
+        <!-- Game Modal -->
+        <div id="gameModal" class="game-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="gameTitle" class="modal-title"></h2>
+                    <button class="close-btn" onclick="closeGameModal()">✕</button>
                 </div>
-
-                <div class="quest-card locked">
-                    <h3>Single Crochet</h3>
-                    <p>Practice the single crochet stitch.</p>
-                    <span class="difficulty">Beginner</span>
-                    <p class="locked-text">Unlock after previous quests.</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Game Modal -->
-    <div class="game-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2 class="modal-title" id="modal-title">Game Title</h2>
-                <button class="close-btn" aria-label="Close modal">&times;</button>
-            </header>
-            <div class="game-container">
-                <div class="game-frame">
-                    <!-- iframe for game will be inserted here -->
-                    <iframe id="game-iframe" src="" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <div class="game-instructions" id="game-instructions">
-                    <h3>Instructions</h3>
-                    <p>Select a game from the quests to start playing. Instructions will appear here.</p>
+                <div class="game-container">
+                    <div class="game-frame">
+                        <iframe id="gameFrame" src="" width="800" height="600" frameborder="0"></iframe>
+                    </div>
+                    <div class="game-instructions">
+                        <h3>🎮 Quest Instructions</h3>
+                        <div id="gameInstructions"></div>
+                        <div class="game-controls">
+                            <button class="crystal-btn small" onclick="restartGame()">🔄 Restart</button>
+                            <button class="crystal-btn small" onclick="toggleFullscreen()">🖥️ Fullscreen</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <section class="quest-section" id="progress">
+            <h2 class="quest-title">📊 Your Journey Progress</h2>
+            <p class="quest-subtitle">Track your advancement through the realms</p>
+            
+            <div class="quest-grid">
+                <div class="quest-card">
+                    <h3>🌟 Current Level: Apprentice</h3>
+                    <p>Level 1 of 50 • 0/100 XP to next level</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quest-card">
+                    <h3>🏆 Badges Earned</h3>
+                    <p>0 of 50 badges collected</p>
+                    <div style="margin-top: 15px;">
+                        <span style="font-size: 2rem; opacity: 0.3;">🥇🏅⭐🎯🌟</span>
+                    </div>
+                </div>
+
+                <div class="quest-card">
+                    <h3>📈 Skill Mastery</h3>
+                    <p>Machine Skills: 0% • Pattern Reading: 0% • Construction: 0%</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quest-section" id="community">
+            <h2 class="quest-title">👥 Crafters' Guild</h2>
+            <p class="quest-subtitle">Join fellow adventurers on their sewing quests</p>
+            
+            <div class="quest-grid">
+                <div class="quest-card">
+                    <h3>💬 Community Forum</h3>
+                    <p>Share your creations, get help with tricky quests, and connect with other apprentice seamsters!</p>
+                </div>
+
+                <div class="quest-card">
+                    <h3>🎨 Project Gallery</h3>
+                    <p>Showcase your completed quests and admire the magical creations of your fellow guild members!</p>
+                </div>
+
+                <div class="quest-card">
+                    <h3>🔄 Pattern Exchange</h3>
+                    <p>Trade patterns, share modifications, and collaborate on custom designs with the community!</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        // Map of game IDs to their iframe src and instructions
-        const gameData = {
-            "hand-sewing-level-1": {
-                title: "Hand Sewing Level 1",
-                src: "https://scratch.mit.edu/projects/833668569/embed",
-                instructions: "Learn the basics of hand sewing with simple stitches."
-            },
-            "threading-the-machine": {
-                title: "Threading the Machine",
-                src: "https://scratch.mit.edu/projects/834182970/embed",
-                instructions: "Master threading a sewing machine correctly."
+        // Generate animated stars
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
             }
-            // Add other games as needed
+        }
+
+        // Animate progress bars on scroll
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    bar.style.width = (Math.random() * 60 + 20) + '%';
+                }, index * 200);
+            });
+        }
+
+        // Add click effects to quest cards
+        function addClickEffects() {
+            const questCards = document.querySelectorAll('.quest-card');
+            questCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px)';
+                    }, 150);
+                });
+            });
+        }
+
+        // Game modal functions
+        const gameData = {
+            'machine-familiar': {
+                title: '🎯 Meet Your Sewing Machine Familiar',
+                url: 'https://scratch.mit.edu/projects/1196021940/',
+                instructions: `
+                    <p><strong>Phase 1:</strong> Click on the glowing hotspots to identify each part of your sewing machine familiar!</p>
+                    <p><strong>Phase 2:</strong> Drag the magical thread through the correct path to awaken your machine.</p>
+                    <p><strong>Phase 3:</strong> Follow the light sequence to complete the bonding ritual!</p>
+                    <br>
+                    <p><strong>🎯 Goal:</strong> Successfully identify all parts and complete the threading quest to unlock your machine's power!</p>
+                    <p><strong>💡 Tip:</strong> Take your time - each part has a special function to discover!</p>
+                `
+            },
+            'five-stitches': {
+                title: '⚔️ The Fundamental Five Stitches',
+                url: 'https://scratch.mit.edu/projects/1196021940/',
+                instructions: `
+                    <p><strong>Learn the ancient stitches:</strong></p>
+                    <p>• Straight Stitch - The foundation of all sewing</p>
+                    <p>• Zigzag Stitch - For stretchy fabrics and finishing</p>
+                    <p>• Buttonhole Stitch - Create perfect openings</p>
+                    <p>• Overlock Stitch - Prevent fraying</p>
+                    <p>• Blind Hem Stitch - Invisible magic!</p>
+                    <br>
+                    <p><strong>🎯 Goal:</strong> Master each stitch through interactive mini-games!</p>
+                    <p><strong>💡 Tip:</strong> Each stitch has its own special use - learn when to use each one!</p>
+                `
+            }
         };
 
-        const modal = document.querySelector('.game-modal');
-        const closeBtn = modal.querySelector('.close-btn');
-        const modalTitle = modal.querySelector('.modal-title');
-        const gameIframe = document.getElementById('game-iframe');
-        const instructions = document.getElementById('game-instructions').querySelector('p');
-
-        // Open modal function
-        function openModal(gameId) {
-            if (!gameData[gameId]) return; // No game data found
-            modalTitle.textContent = gameData[gameId].title;
-            gameIframe.src = gameData[gameId].src;
-            instructions.textContent = gameData[gameId].instructions;
+        function openGameModal(gameId) {
+            const modal = document.getElementById('gameModal');
+            const gameFrame = document.getElementById('gameFrame');
+            const gameTitle = document.getElementById('gameTitle');
+            const gameInstructions = document.getElementById('gameInstructions');
+            
+            const game = gameData[gameId];
+            
+            gameTitle.textContent = game.title;
+            gameFrame.src = game.url;
+            gameInstructions.innerHTML = game.instructions;
+            
             modal.style.display = 'block';
-            modal.focus();
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
+            document.body.style.overflow = 'hidden';
         }
 
-        // Close modal function
-        function closeModal() {
+        function closeGameModal() {
+            const modal = document.getElementById('gameModal');
+            const gameFrame = document.getElementById('gameFrame');
+            
             modal.style.display = 'none';
-            gameIframe.src = ''; // Stop the game when modal closes
-            document.body.style.overflow = ''; // Restore scroll
+            gameFrame.src = '';
+            document.body.style.overflow = 'auto';
         }
 
-        // Event listener for quest cards
-        document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const gameId = card.getAttribute('data-game-id');
-                openModal(gameId);
-            });
-        });
+        function restartGame() {
+            const gameFrame = document.getElementById('gameFrame');
+            const currentSrc = gameFrame.src;
+            gameFrame.src = '';
+            setTimeout(() => {
+                gameFrame.src = currentSrc;
+            }, 100);
+        }
 
-        // Close modal on close button click
-        closeBtn.addEventListener('click', closeModal);
+        function toggleFullscreen() {
+            const gameFrame = document.getElementById('gameFrame');
+            if (gameFrame.requestFullscreen) {
+                gameFrame.requestFullscreen();
+            } else if (gameFrame.webkitRequestFullscreen) {
+                gameFrame.webkitRequestFullscreen();
+            } else if (gameFrame.msRequestFullscreen) {
+                gameFrame.msRequestFullscreen();
+            }
+        }
 
-        // Close modal on click outside modal content
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
+        function showLockedMessage() {
+            alert('🔒 This quest is locked! Complete the previous adventures first to unlock new challenges!');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('gameModal');
+            if (event.target === modal) {
+                closeGameModal();
+            }
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeGameModal();
             }
         });
 
-        // Close modal on pressing Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display === 'block') {
-                closeModal();
-            }
+        /* Glowing elements */
+        .glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
+            to { text-shadow: 0 0 30px rgba(255, 107, 157, 0.8), 0 0 40px rgba(255, 107, 157, 0.6); }
+        }
+
+    
+<script>
+    // Map of game IDs to their iframe src and instructions
+    const gameData = {
+        "hand-sewing-level-1": {
+            title: "Hand Sewing Level 1",
+            src: "https://scratch.mit.edu/projects/833668569/embed",
+            instructions: "Learn the basics of hand sewing with simple stitches."
+        },
+        "threading-the-machine": {
+            title: "Threading the Machine",
+            src: "https://scratch.mit.edu/projects/834182970/embed",
+            instructions: "Master threading a sewing machine correctly."
+        }
+        // Add other games as needed
+    };
+
+    const modal = document.querySelector('.game-modal');
+    const closeBtn = modal.querySelector('.close-btn');
+    const modalTitle = modal.querySelector('.modal-title');
+    const gameIframe = document.getElementById('game-iframe');
+    const instructions = document.getElementById('game-instructions').querySelector('p');
+
+    // Open modal function
+    function openModal(gameId) {
+        if (!gameData[gameId]) return; // No game data found
+        modalTitle.textContent = gameData[gameId].title;
+        gameIframe.src = gameData[gameId].src;
+        instructions.textContent = gameData[gameId].instructions;
+        modal.style.display = 'block';
+        modal.focus();
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    // Close modal function
+    function closeModal() {
+        modal.style.display = 'none';
+        gameIframe.src = ''; // Stop the game when modal closes
+        document.body.style.overflow = ''; // Restore scroll
+    }
+
+    // Event listener for quest cards
+    document.querySelectorAll('.game-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const gameId = card.getAttribute('data-game-id');
+            openModal(gameId);
         });
+    });
+
+    // Close modal on close button click
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close modal on click outside modal content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close modal on pressing Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            closeModal();
+        }
+    });
+</script>
     </script>
 </body>
 </html>
+
