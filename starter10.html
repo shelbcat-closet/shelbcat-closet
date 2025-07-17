@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quest Cards & Modal Integration</title>
+<style>
+  /* Basic resets & layout */
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #121212;
+    color: #eee;
+    overflow-x: hidden;
+  }
+  h2, h3, p {
+    margin: 0 0 1rem 0;
+  }
+  section.quest-section {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .quest-title {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+  .quest-subtitle {
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: #bbb;
+  }
+
+  .quest-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .quest-card {
+    background: #222;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(255 255 255 / 0.05);
+    padding: 1rem;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .quest-card:hover:not(.locked) {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(255 255 255 / 0.15);
+  }
+  .quest-card.locked {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .difficulty {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: #5a5a5a;
+    color: #ddd;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  .play-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255 255 255 / 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+  }
+  .quest-card:hover .play-overlay:not(.locked) {
+    opacity: 1;
+  }
+  .play-button {
+    background: #57a6ff;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    user-select: none;
+  }
+
+  /* Locked overlay */
+  .lock-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0 0 0 / 0.7);
+    border-radius: 8px;
+    color: #f55;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+  }
+  .lock-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .unlock-text {
+    font-size: 0.9rem;
+  }
+
+  .progress-container {
+    margin-top: 0.75rem;
+  }
+  .progress-bar {
+    background: #444;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 8px;
+    width: 0%;
+    background: #57a6ff;
+    transition: width 1.5s ease;
+  }
+
+  /* Modal styles */
+  #gameModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(3px);
+    overflow: auto;
+  }
+  #gameModal .modal-content {
+    position: relative;
+    background: #222;
+    margin: 4rem auto 2rem auto;
+    padding: 1.5rem;
+    border-radius: 10px;
+    max-width: 900px;
+    box-shadow: 0 0 20px rgba(87,166,255,0.6);
+    color: #eee;
+  }
+  #gameModal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #gameModal h2 {
+    margin: 0;
+  }
+  #gameModal .close-button {
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: #f55;
+    user-select: none;
+    padding: 0 0.5rem;
+  }
+  #gameModal iframe {
+    width: 100%;
+    height: 480px;
+    border: none;
+    margin-top: 1rem;
+    border-radius: 8px;
+    background: #111;
+  }
+  #gameInstructions {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .modal-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  .modal-footer button {
+    background: #57a6ff;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+  }
+  .modal-footer button:hover {
+    background: #3b82f6;
+  }
+
+  /* Star animation container */
+  .stars {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    width: 2px;
+    height: 2px;
+    animation: twinkle 3s infinite alternate ease-in-out;
+  }
+  @keyframes twinkle {
+    0% {opacity: 0.2;}
+    100% {opacity: 0.9;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<section class="quest-section" id="quests">
+    <h2 class="quest-title">🧵 Current Adventures</h2>
+    <p class="quest-subtitle">Choose your path, young apprentice</p>
+    
+    <div class="quest-grid">
+        <div class="quest-card game-card" data-game-id="machine-familiar">
+            <div class="difficulty">Beginner</div>
+            <div class="play-overlay">
+                <div class="play-button">▶️ PLAY</div>
+            </div>
+            <h3>🎯 Meet Your Sewing Machine Familiar</h3>
+            <p>Embark on your first quest to bond with your magical sewing machine. Learn the sacred art of threading and discover the mystical parts that make the magic happen!</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quest-card game-card" data-game-id="five-stitches">
+            <div class="difficulty">Beginner</div>
+            <div class="play-overlay">
+                <div class="play-button">▶️ PLAY</div>
+            </div>
+            <h3>⚔️ The Fundamental Five Stitches</h3>
+            <p>Master the five legendary stitches that form the foundation of all sewing magic. Each stitch holds ancient power waiting to be unlocked!</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quest-card game-card locked">
+            <div class="difficulty">Intermediate</div>
+            <div class="lock-overlay">
+                <div class="lock-icon">🔒</div>
+                <div class="unlock-text">Complete previous quests to unlock</div>
+            </div>
+            <h3>🌲 Fabric Forest Expedition</h3>
+            <p>Venture into the mystical Fabric Forest to discover the properties of different textile realms. From Cotton Kingdom to Polyester Palace!</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quest-card game-card locked">
+            <div class="difficulty">Boss Fight</div>
+            <div class="lock-overlay">
+                <div class="lock-icon">🔒</div>
+                <div class="unlock-text">Complete previous quests to unlock</div>
+            </div>
+            <h3>👜 Simple Tote Bag Creation</h3>
+            <p>Face your first boss battle! Combine all your learned skills to craft your very first complete project - a magical tote bag!</p>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div id="gameModal">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="gameTitle">
+    <div class="modal-header">
+      <h2 id="gameTitle">Game Title</h2>
+      <div class="close-button" role="button" tabindex="0" aria-label="Close modal">&times;</div>
+    </div>
+    <iframe id="gameFrame" src="" allowfullscreen></iframe>
+    <div id="gameInstructions"></div>
+    <div class="modal-footer">
+      <button id="restartGameBtn" type="button">Restart</button>
+      <button id="fullscreenBtn" type="button">Fullscreen</button>
+      <button id="closeGameBtn" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Generate animated stars background
+  function createStars() {
+      const starsContainer = document.querySelector('.stars');
+      const numStars = 100;
+      
+      for (let i = 0; i < numStars; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = Math.random() * 100 + '%';
+          star.style.top = Math.random() * 100 + '%';
+          star.style.animationDelay = Math.random() * 3 + 's';
+          starsContainer.appendChild(star);
+      }
+  }
+
+  // Animate progress bars on load
+  function animateProgressBars() {
+      const progressBars = document.querySelectorAll('.progress-fill');
+      progressBars.forEach((bar, index) => {
+          setTimeout(() => {
+              bar.style.width = (Math.random() * 60 + 20) + '%';
+          }, index * 200);
+      });
+  }
+
+  // Game data keyed by data-game-id attribute
+  const gameData = {
+      'machine-familiar': {
+          title: '🎯 Meet Your Sewing Machine Familiar',
+          url: 'https://scratch.mit.edu/projects/1196021940/',
+          instructions: `
+              <p><strong>Phase 1:</strong> Click on the glowing hotspots to identify each part of your sewing machine familiar!</p>
+              <p><strong>Phase 2:</strong> Drag the magical thread through the correct path to awaken your machine.</p>
+              <p><strong>Phase 3:</strong> Follow the light sequence to complete the bonding ritual!</p>
+              <br>
+              <p><strong>🎯 Goal:</strong> Successfully identify all parts and complete the threading quest to unlock your machine's power!</p>
+              <p><strong>💡 Tip:</strong> Take your time - each part has a special function to discover!</p>
+          `
+      },
+      'five-stitches': {
+          title: '⚔️ The Fundamental Five Stitches',
+          url: 'https://scratch.mit.edu/projects/1196021940/',
+          instructions: `
+              <p><strong>Learn the ancient stitches:</strong></p>
+              <p>• Straight Stitch - The foundation of all sewing</p>
+              <p>• Zigzag Stitch - For stretchy fabrics and finishing</p>
+              <p>• Buttonhole Stitch - Create perfect openings</p>
+              <p>• Overlock Stitch - Prevent fraying</p>
+              <p>• Blind Hem Stitch - Invisible magic!</p>
+              <br>
+              <p><strong>🎯 Goal:</strong> Master each stitch through interactive mini-games!</p>
+              <p><strong>💡 Tip:</strong> Each stitch has its own special use - learn when to use each one!</p>
+          `
+      }
+  };
+
+  // Open modal and populate with game info
+  function openGameModal(gameId) {
+      const modal = document.getElementById('gameModal');
+      const gameFrame = document.getElementById('gameFrame');
+      const gameTitle = document.getElementById('gameTitle');
+      const gameInstructions = document.getElementById('gameInstructions');
+      
+      const game = gameData[gameId];
+      
+      if (!game) return; // Safety check
+      
+      gameTitle.textContent = game.title;
+      gameFrame.src = game.url;
+      gameInstructions.innerHTML = game.instructions;
+      
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+  }
+
+  // Close modal and reset iframe src
+  function closeGameModal() {
+      const modal = document.getElementById('gameModal');
+      const gameFrame = document.getElementById('gameFrame');
+      
+      modal.style.display = 'none';
+      gameFrame.src = '';
+      document.body.style.overflow = 'auto';
+  }
+
+  // Restart iframe game
+  function restartGame() {
+      const gameFrame = document.getElementById('gameFrame');
+      const currentSrc = gameFrame.src;
+      gameFrame.src = '';
+      setTimeout(() => {
+          gameFrame.src = currentSrc;
+      }, 100);
+  }
+
+  // Fullscreen toggle for iframe
+  function toggleFullscreen() {
+      const gameFrame = document.getElementById('gameFrame');
+      if (gameFrame.requestFullscreen) {
+          gameFrame.requestFullscreen();
+      } else if (gameFrame.webkitRequestFullscreen) {
+          gameFrame.webkitRequestFullscreen();
+      } else if (gameFrame.msRequestFullscreen) {
+          gameFrame.msRequestFullscreen();
+      }
+  }
+
+  // Alert locked quests
+  function showLockedMessage() {
+      alert('🔒 This quest is locked! Complete the previous adventures first to unlock new challenges!');
+  }
+
+  // Event listeners for modal buttons & cards
+  document.addEventListener('DOMContentLoaded', () => {
+      createStars();
+      animateProgressBars();
+
+      // Unlocked quest cards open modal
+      const gameCards = document.querySelectorAll('.quest-card.game-card:not(.locked)');
+      gameCards.forEach(card => {
+          card.addEventListener('click', () => {
+              const gameId = card.getAttribute('data-game-id');
+              if (gameId) {
+                  openGameModal(gameId);
+              }
+          });
+      });
+
+      // Locked quest cards alert on click
+      const lockedCards = document.querySelectorAll('.quest-card.locked');
+      lockedCards.forEach(card => {
+          card.addEventListener('click', showLockedMessage);
+      });
+
+      // Modal close buttons & close icon
+      document.getElementById('closeGameBtn').addEventListener('click', closeGameModal);
+      document.querySelector('#gameModal .close-button').addEventListener('click', closeGameModal);
+
+      // Restart & fullscreen buttons
+      document.getElementById('restartGameBtn').addEventListener('click', restartGame);
+      document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+  });
+
+  // Close modal when clicking outside content
+  window.onclick = function(event) {
+      const modal = document.getElementById('gameModal');
+      if (event.target === modal) {
+          closeGameModal();
+      }
+  }
+
+  // Close modal on ESC key
+  document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+          closeGameModal();
+      }
+  });
+</script>
+
+</body>
+</html>
