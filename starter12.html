@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawaii Craft Academy - Level 1</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0d2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .level-card {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            text-align: center;
+        }
+        
+        .progress-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat {
+            background: rgba(255, 107, 157, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 157, 0.3);
+        }
+        
+        .button {
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.3), rgba(255, 107, 157, 0.3));
+            border: 2px solid rgba(255, 107, 157, 0.5);
+            border-radius: 10px;
+            color: #fff;
+            padding: 12px 24px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .quest-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .quest-item {
+            background: rgba(255, 107, 157, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #ff6b9d;
+        }
+        
+        .completed {
+            opacity: 0.6;
+            border-left-color: #4CAF50;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+        }
+        
+        .level-nav {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .level-btn {
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            color: #ccc;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .level-btn.current {
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.3), rgba(255, 107, 157, 0.3));
+            border-color: rgba(255, 107, 157, 0.5);
+            color: #fff;
+        }
+        
+        .level-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 107, 157, 0.2);
+        }
+        
+        .save-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        #saveCode {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #ffa500;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            border-radius: 5px;
+            color: #e0e0e0;
+            padding: 10px;
+            font-family: monospace;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: #ff6b9d; margin-bottom: 30px;">🌸 Kawaii Craft Academy</h1>
+        
+        <!-- Level Navigation -->
+        <div class="level-nav">
+            <a href="#" class="level-btn current" onclick="loadLevel(1)">Level 1</a>
+            <a href="#" class="level-btn" onclick="loadLevel(2)">Level 2</a>
+            <a href="#" class="level-btn" onclick="loadLevel(3)">Level 3</a>
+            <a href="#" class="level-btn" onclick="loadLevel(4)">Level 4</a>
+            <a href="#" class="level-btn" onclick="loadLevel(5)">Level 5</a>
+        </div>
+        
+        <!-- Current Level Display -->
+        <div class="level-card">
+            <h2 id="levelTitle">Level 1: Getting Started</h2>
+            <p id="levelDescription">Welcome to Kawaii Craft Academy! Learn the basics of machine sewing.</p>
+        </div>
+        
+        <!-- Progress Display -->
+        <div class="progress-display">
+            <div class="stat">
+                <strong>Level:</strong> <span id="currentLevel">1</span>
+            </div>
+            <div class="stat">
+                <strong>XP:</strong> <span id="currentXP">0</span>/<span id="maxXP">100</span>
+            </div>
+            <div class="stat">
+                <strong>Badges:</strong> <span id="currentBadges">0</span>
+            </div>
+            <div class="stat">
+                <strong>Machine:</strong> <span id="skillMachine">0</span>%
+            </div>
+            <div class="stat">
+                <strong>Construction:</strong> <span id="skillConstruction">0</span>%
+            </div>
+        </div>
+        
+        <!-- Quests Section -->
+        <div class="quest-section">
+            <h3>📝 Current Quests</h3>
+            <div id="questList"></div>
+        </div>
+        
+        <!-- Save/Load Section -->
+        <div class="save-section">
+            <h3>💾 Save Progress</h3>
+            <button class="button" onclick="saveProgress()">Save to URL</button>
+            <button class="button" onclick="exportCode()">Export Code</button>
+            <button class="button" onclick="importCode()">Import Code</button>
+            
+            <div id="saveCode" style="display: none;"></div>
+            <textarea id="importArea" placeholder="Paste save code here..." style="display: none;"></textarea>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <button class="button" id="prevBtn" onclick="previousLevel()" style="display: none;">← Previous</button>
+            <button class="button" id="nextBtn" onclick="nextLevel()" style="display: none;">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        // Level data structure
+        const levelData = {
+            1: {
+                title: "Level 1: Getting Started",
+                description: "Welcome to Kawaii Craft Academy! Learn the basics of machine sewing.",
+                xp: 0,
+                maxXP: 100,
+                badges: 0,
+                skills: { machine: 0, construction: 0 },
+                quests: [
+                    { id: 'machine-familiar', title: 'Get familiar with your sewing machine', completed: false },
+                    { id: 'thread-needle', title: 'Learn to thread the needle', completed: false },
+                    { id: 'first-stitch', title: 'Make your first stitch', completed: false }
+                ]
+            },
+            2: {
+                title: "Level 2: Basic Techniques",
+                description: "Master straight lines and basic stitches.",
+                xp: 120,
+                maxXP: 200,
+                badges: 1,
+                skills: { machine: 25, construction: 15 },
+                quests: [
+                    { id: 'straight-lines', title: 'Practice straight line stitching', completed: true },
+                    { id: 'corners', title: 'Learn to turn corners', completed: false },
+                    { id: 'seam-allowance', title: 'Understand seam allowances', completed: false }
+                ]
+            },
+            3: {
+                title: "Level 3: First Project",
+                description: "Create your first simple project - a fabric bookmark!",
+                xp: 280,
+                maxXP: 350,
+                badges: 2,
+                skills: { machine: 45, construction: 35 },
+                quests: [
+                    { id: 'cut-fabric', title: 'Cut fabric to size', completed: true },
+                    { id: 'pin-pieces', title: 'Pin fabric pieces together', completed: true },
+                    { id: 'sew-bookmark', title: 'Sew your bookmark', completed: false }
+                ]
+            },
+            4: {
+                title: "Level 4: Advanced Stitches",
+                description: "Learn decorative stitches and pattern work.",
+                xp: 420,
+                maxXP: 500,
+                badges: 3,
+                skills: { machine: 65, construction: 55 },
+                quests: [
+                    { id: 'zigzag-stitch', title: 'Master the zigzag stitch', completed: true },
+                    { id: 'buttonhole', title: 'Create your first buttonhole', completed: false },
+                    { id: 'decorative-edge', title: 'Add decorative edges', completed: false }
+                ]
+            },
+            5: {
+                title: "Level 5: Complex Projects",
+                description: "Ready for bigger challenges? Let's make a tote bag!",
+                xp: 650,
+                maxXP: 750,
+                badges: 4,
+                skills: { machine: 85, construction: 75 },
+                quests: [
+                    { id: 'pattern-layout', title: 'Layout pattern pieces', completed: true },
+                    { id: 'construct-bag', title: 'Construct the bag body', completed: true },
+                    { id: 'add-handles', title: 'Attach handles', completed: false }
+                ]
+            }
+        };
+
+        let currentLevel = 1;
+        let playerProgress = levelData[1];
+
+        // Load specific level
+        function loadLevel(level) {
+            currentLevel = level;
+            playerProgress = { ...levelData[level] };
+            updateDisplay();
+            updateNavigation();
+            updateURL();
+        }
+
+        // Update display
+        function updateDisplay() {
+            document.getElementById('levelTitle').textContent = playerProgress.title;
+            document.getElementById('levelDescription').textContent = playerProgress.description;
+            document.getElementById('currentLevel').textContent = currentLevel;
+            document.getElementById('currentXP').textContent = playerProgress.xp;
+            document.getElementById('maxXP').textContent = playerProgress.maxXP;
+            document.getElementById('currentBadges').textContent = playerProgress.badges;
+            document.getElementById('skillMachine').textContent = playerProgress.skills.machine;
+            document.getElementById('skillConstruction').textContent = playerProgress.skills.construction;
+            
+            // Update quest list
+            const questList = document.getElementById('questList');
+            questList.innerHTML = '';
+            playerProgress.quests.forEach(quest => {
+                const questDiv = document.createElement('div');
+                questDiv.className = `quest-item ${quest.completed ? 'completed' : ''}`;
+                questDiv.innerHTML = `
+                    <strong>${quest.completed ? '✅' : '⏳'} ${quest.title}</strong>
+                    ${quest.completed ? '' : `<button class="button" onclick="completeQuest('${quest.id}')" style="float: right; padding: 5px 10px; margin: 0;">Complete</button>`}
+                `;
+                questList.appendChild(questDiv);
+            });
+            
+            // Update level navigation
+            document.querySelectorAll('.level-btn').forEach((btn, index) => {
+                btn.classList.toggle('current', index + 1 === currentLevel);
+            });
+        }
+
+        // Complete quest
+        function completeQuest(questId) {
+            const quest = playerProgress.quests.find(q => q.id === questId);
+            if (quest && !quest.completed) {
+                quest.completed = true;
+                playerProgress.xp += 20;
+                playerProgress.skills.machine += 5;
+                playerProgress.skills.construction += 3;
+                updateDisplay();
+                showNotification('Quest completed! +20 XP', 'success');
+            }
+        }
+
+        // Navigation
+        function updateNavigation() {
+            document.getElementById('prevBtn').style.display = currentLevel > 1 ? 'inline-block' : 'none';
+            document.getElementById('nextBtn').style.display = currentLevel < 5 ? 'inline-block' : 'none';
+        }
+
+        function previousLevel() {
+            if (currentLevel > 1) loadLevel(currentLevel - 1);
+        }
+
+        function nextLevel() {
+            if (currentLevel < 5) loadLevel(currentLevel + 1);
+        }
+
+        // Save/Load functionality
+        function saveProgress() {
+            const saveData = {
+                level: currentLevel,
+                progress: playerProgress
+            };
+            const encoded = btoa(JSON.stringify(saveData));
+            window.location.hash = encoded;
+            showNotification('Progress saved to URL!', 'success');
+        }
+
+        function exportCode() {
+            const saveData = {
+                level: currentLevel,
+                progress: playerProgress
+            };
+            const encoded = btoa(JSON.stringify(saveData));
+            const saveCode = `KAWAII-CRAFT-${encoded}`;
+            
+            document.getElementById('saveCode').textContent = saveCode;
+            document.getElementById('saveCode').style.display = 'block';
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(saveCode);
+                showNotification('Save code copied to clipboard!', 'success');
+            }
+        }
+
+        function importCode() {
+            const textarea = document.getElementById('importArea');
+            textarea.style.display = 'block';
+            textarea.focus();
+            
+            textarea.onkeyup = function(e) {
+                if (e.key === 'Enter') {
+                    const code = textarea.value.trim();
+                    if (code.startsWith('KAWAII-CRAFT-')) {
+                        const encoded = code.replace('KAWAII-CRAFT-', '');
+                        try {
+                            const saveData = JSON.parse(atob(encoded));
+                            currentLevel = saveData.level;
+                            playerProgress = saveData.progress;
+                            updateDisplay();
+                            updateNavigation();
+                            textarea.style.display = 'none';
+                            textarea.value = '';
+                            showNotification('Progress loaded!', 'success');
+                        } catch (e) {
+                            showNotification('Invalid save code', 'error');
+                        }
+                    }
+                }
+            };
+        }
+
+        // URL management
+        function updateURL() {
+            const url = new URL(window.location);
+            url.searchParams.set('level', currentLevel);
+            window.history.pushState(null, '', url);
+        }
+
+        function loadFromURL() {
+            const hash = window.location.hash.substring(1);
+            const urlParams = new URLSearchParams(window.location.search);
+            const levelParam = urlParams.get('level');
+            
+            if (hash) {
+                try {
+                    const saveData = JSON.parse(atob(hash));
+                    currentLevel = saveData.level;
+                    playerProgress = saveData.progress;
+                    updateDisplay();
+                    updateNavigation();
+                    return;
+                } catch (e) {}
+            }
+            
+            if (levelParam) {
+                const level = parseInt(levelParam);
+                if (level >= 1 && level <= 5) {
+                    loadLevel(level);
+                    return;
+                }
+            }
+            
+            loadLevel(1);
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'rgba(0, 255, 0, 0.2)',
+                error: 'rgba(255, 0, 0, 0.2)',
+                info: 'rgba(0, 150, 255, 0.2)'
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type]};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 2000;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transform: translateX(300px);
+                transition: transform 0.3s ease;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(300px)';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromURL();
+        });
+    </script>
+</body>
+</html>
