@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Save System Demo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0d2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .save-section {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 107, 157, 0.3);
+        }
+        
+        .save-section h2 {
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .button {
+            background: linear-gradient(145deg, rgba(138, 43, 226, 0.3), rgba(255, 107, 157, 0.3));
+            border: 2px solid rgba(255, 107, 157, 0.5);
+            border-radius: 10px;
+            color: #fff;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .progress-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .save-code {
+            background: rgba(255, 107, 157, 0.1);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #ffa500;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            border-radius: 5px;
+            color: #e0e0e0;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+        
+        .warning {
+            background: rgba(255, 165, 0, 0.2);
+            border: 1px solid rgba(255, 165, 0, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            color: #ffa500;
+        }
+        
+        .info {
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid rgba(0, 150, 255, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            color: #00aaff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: #ff6b9d; margin-bottom: 30px;">🌸 Progress Save System for GitHub Pages</h1>
+        
+        <!-- Method 1: URL Hash -->
+        <div class="save-section">
+            <h2>Method 1: URL Hash Save/Load</h2>
+            <p>Save progress in the URL hash - users can bookmark their progress!</p>
+            
+            <div class="progress-display">
+                <div><strong>Current Progress:</strong></div>
+                <div>Level: <span id="currentLevel">1</span></div>
+                <div>XP: <span id="currentXP">0</span>/100</div>
+                <div>Badges: <span id="currentBadges">0</span></div>
+                <div>Skills: Machine(<span id="skillMachine">0</span>%) Construction(<span id="skillConstruction">0</span>%)</div>
+            </div>
+            
+            <button class="button" onclick="saveToURL()">💾 Save to URL</button>
+            <button class="button" onclick="loadFromURL()">📁 Load from URL</button>
+            <button class="button" onclick="simulateProgress()">🎮 Simulate Progress</button>
+            
+            <div class="info">
+                <strong>How it works:</strong> Progress is encoded in the URL hash. Users can bookmark the URL to save their progress!
+            </div>
+        </div>
+        
+        <!-- Method 2: Export/Import -->
+        <div class="save-section">
+            <h2>Method 2: Export/Import Save Code</h2>
+            <p>Generate a save code that users can copy and paste to restore progress</p>
+            
+            <button class="button" onclick="exportProgress()">📤 Export Save Code</button>
+            <button class="button" onclick="importProgress()">📥 Import Save Code</button>
+            
+            <div>
+                <strong>Save Code:</strong>
+                <div class="save-code" id="saveCode">Click "Export Save Code" to generate...</div>
+            </div>
+            
+            <div>
+                <strong>Import Code:</strong>
+                <textarea id="importCode" placeholder="Paste your save code here..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Method 3: GitHub Gist -->
+        <div class="save-section">
+            <h2>Method 3: GitHub Gist Integration</h2>
+            <p>Save progress to a GitHub Gist (requires GitHub account)</p>
+            
+            <div class="warning">
+                <strong>Note:</strong> This method requires users to have a GitHub account and generate a Personal Access Token.
+            </div>
+            
+            <input type="text" id="githubToken" placeholder="GitHub Personal Access Token" style="width: 100%; margin: 10px 0; padding: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,107,157,0.3); border-radius: 5px; color: #e0e0e0;">
+            
+            <button class="button" onclick="saveToGist()">☁️ Save to Gist</button>
+            <button class="button" onclick="loadFromGist()">☁️ Load from Gist</button>
+            
+            <div id="gistStatus" class="info" style="display: none;"></div>
+        </div>
+        
+        <!-- Method 4: File Download -->
+        <div class="save-section">
+            <h2>Method 4: File Download/Upload</h2>
+            <p>Download progress as a file, upload to restore</p>
+            
+            <button class="button" onclick="downloadProgress()">💾 Download Progress File</button>
+            <input type="file" id="uploadFile" accept=".json" style="display: none;" onchange="uploadProgress()">
+            <button class="button" onclick="document.getElementById('uploadFile').click()">📁 Upload Progress File</button>
+        </div>
+        
+        <!-- Implementation Code -->
+        <div class="save-section">
+            <h2>Implementation Code for Your Site</h2>
+            <p>Add this JavaScript to your existing site:</p>
+            
+            <div class="code-block" id="implementationCode">
+// Add this to your existing JavaScript section
+
+// Enhanced progress tracking with save/load functionality
+let playerProgress = {
+    level: 1,
+    xp: 0,
+    xpToNext: 100,
+    completedQuests: [],
+    badges: [],
+    skills: {
+        machine: 0,
+        patternReading: 0,
+        construction: 0
+    },
+    lastSaved: Date.now()
+};
+
+// Base64 encoding/decoding for save codes
+function encodeProgress(progress) {
+    return btoa(JSON.stringify(progress));
+}
+
+function decodeProgress(encoded) {
+    try {
+        return JSON.parse(atob(encoded));
+    } catch (e) {
+        return null;
+    }
+}
+
+// Method 1: URL Hash Save/Load
+function saveToURL() {
+    const encoded = encodeProgress(playerProgress);
+    window.location.hash = encoded;
+    showNotification('Progress saved to URL! Bookmark this page to save your progress.', 'success');
+}
+
+function loadFromURL() {
+    const hash = window.location.hash.substring(1);
+    if (hash) {
+        const loaded = decodeProgress(hash);
+        if (loaded) {
+            playerProgress = loaded;
+            updateProgressUI();
+            showNotification('Progress loaded from URL!', 'success');
+        } else {
+            showNotification('Invalid save data in URL', 'error');
+        }
+    } else {
+        showNotification('No save data found in URL', 'error');
+    }
+}
+
+// Method 2: Export/Import Save Code
+function exportSaveCode() {
+    const encoded = encodeProgress(playerProgress);
+    // Create a more user-friendly format
+    const saveCode = `KAWAII-CRAFT-SAVE-${encoded}`;
+    
+    // Copy to clipboard if possible
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(saveCode);
+        showNotification('Save code copied to clipboard!', 'success');
+    }
+    
+    return saveCode;
+}
+
+function importSaveCode(saveCode) {
+    // Extract the encoded part
+    const encoded = saveCode.replace('KAWAII-CRAFT-SAVE-', '');
+    const loaded = decodeProgress(encoded);
+    
+    if (loaded) {
+        playerProgress = loaded;
+        updateProgressUI();
+        showNotification('Progress loaded from save code!', 'success');
+        return true;
+    } else {
+        showNotification('Invalid save code', 'error');
+        return false;
+    }
+}
+
+// Method 3: GitHub Gist Integration
+async function saveToGist(token) {
+    const gistData = {
+        description: 'Kawaii Craft Academy Progress Save',
+        public: false,
+        files: {
+            'kawaii-craft-progress.json': {
+                content: JSON.stringify(playerProgress, null, 2)
+            }
+        }
+    };
+    
+    try {
+        const response = await fetch('https://api.github.com/gists', {
+            method: 'POST',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gistData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            localStorage.setItem('kawaii-craft-gist-id', result.id);
+            showNotification('Progress saved to GitHub Gist!', 'success');
+            return result.id;
+        } else {
+            throw new Error('Failed to save to Gist');
+        }
+    } catch (error) {
+        showNotification('Error saving to Gist: ' + error.message, 'error');
+        return null;
+    }
+}
+
+async function loadFromGist(token, gistId) {
+    try {
+        const response = await fetch(`https://api.github.com/gists/${gistId}`, {
+            headers: {
+                'Authorization': `token ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            const progressData = JSON.parse(result.files['kawaii-craft-progress.json'].content);
+            playerProgress = progressData;
+            updateProgressUI();
+            showNotification('Progress loaded from GitHub Gist!', 'success');
+            return true;
+        } else {
+            throw new Error('Failed to load from Gist');
+        }
+    } catch (error) {
+        showNotification('Error loading from Gist: ' + error.message, 'error');
+        return false;
+    }
+}
+
+// Method 4: File Download/Upload
+function downloadProgressFile() {
+    const dataStr = JSON.stringify(playerProgress, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `kawaii-craft-progress-${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+function uploadProgressFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const progressData = JSON.parse(e.target.result);
+            playerProgress = progressData;
+            updateProgressUI();
+            showNotification('Progress loaded from file!', 'success');
+        } catch (error) {
+            showNotification('Invalid progress file', 'error');
+        }
+    };
+    reader.readAsText(file);
+}
+
+// Auto-save functionality
+function autoSave() {
+    if (typeof(Storage) !== "undefined") {
+        localStorage.setItem('kawaii-craft-autosave', JSON.stringify(playerProgress));
+    }
+}
+
+function autoLoad() {
+    if (typeof(Storage) !== "undefined") {
+        const saved = localStorage.getItem('kawaii-craft-autosave');
+        if (saved) {
+            try {
+                playerProgress = JSON.parse(saved);
+                updateProgressUI();
+                showNotification('Auto-save loaded!', 'info');
+            } catch (e) {
+                console.error('Error loading auto-save:', e);
+            }
+        }
+    }
+}
+
+// Enhanced notification system
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    const colors = {
+        success: 'rgba(0, 255, 0, 0.2)',
+        error: 'rgba(255, 0, 0, 0.2)',
+        info: 'rgba(0, 150, 255, 0.2)',
+        warning: 'rgba(255, 165, 0, 0.2)'
+    };
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${colors[type]};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        z-index: 2000;
+        font-family: 'Griffy', cursive;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transform: translateX(300px);
+        transition: transform 0.3s ease;
+        max-width: 300px;
+    `;
+    
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+    setTimeout(() => {
+        notification.style.transform = 'translateX(300px)';
+        setTimeout(() => document.body.removeChild(notification), 300);
+    }, 3000);
+}
+
+// Initialize save system
+document.addEventListener('DOMContentLoaded', function() {
+    // Try to load from URL first
+    loadFromURL();
+    
+    // If no URL data, try auto-save
+    if (!window.location.hash) {
+        autoLoad();
+    }
+    
+    // Set up auto-save on progress changes
+    const originalCompleteQuest = completeQuest;
+    completeQuest = function(questId) {
+        originalCompleteQuest(questId);
+        autoSave();
+    };
+});
+
+// Add save/load buttons to your UI
+function addSaveLoadButtons() {
+    const saveSection = document.createElement('div');
+    saveSection.className = 'quest-section';
+    saveSection.innerHTML = `
+        <h2 class="quest-title">💾 Save Your Progress</h2>
+        <div class="quest-grid">
+            <div class="quest-card">
+                <h3>📤 Export Save Code</h3>
+                <p>Generate a save code you can copy and paste to restore your progress later.</p>
+                <button class="crystal-btn" onclick="exportAndShow()">Generate Code</button>
+            </div>
+            <div class="quest-card">
+                <h3>📥 Import Save Code</h3>
+                <p>Enter a save code to restore your previous progress.</p>
+                <input type="text" id="importInput" placeholder="Paste save code here..." style="width: 100%; margin: 10px 0; padding: 8px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,107,157,0.3); border-radius: 5px; color: #e0e0e0;">
+                <button class="crystal-btn" onclick="importFromInput()">Import Code</button>
+            </div>
+        </div>
+    `;
+    
+    // Insert before the community section
+    const communitySection = document.getElementById('community');
+    communitySection.parentNode.insertBefore(saveSection, communitySection);
+}
+
+function exportAndShow() {
+    const saveCode = exportSaveCode();
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+    `;
+    
+    modal.innerHTML = `
+        <div style="background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(138, 43, 226, 0.1)); padding: 30px; border-radius: 20px; border: 2px solid rgba(255, 107, 157, 0.5); backdrop-filter: blur(15px); max-width: 500px; text-align: center;">
+            <h3 style="color: #ff6b9d; margin-bottom: 20px;">Your Save Code</h3>
+            <div style="background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 10px; margin: 15px 0; font-family: monospace; word-break: break-all; color: #ffa500;">${saveCode}</div>
+            <p style="color: #ccc; margin: 15px 0;">Copy this code and save it somewhere safe!</p>
+            <button class="crystal-btn" onclick="this.parentElement.parentElement.remove()">Close</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+function importFromInput() {
+    const input = document.getElementById('importInput');
+    const saveCode = input.value.trim();
+    if (saveCode) {
+        importSaveCode(saveCode);
+        input.value = '';
+    }
+}
+
+// Call this after your existing DOMContentLoaded event
+// addSaveLoadButtons();
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo progress data
+        let demoProgress = {
+            level: 1,
+            xp: 0,
+            xpToNext: 100,
+            completedQuests: [],
+            badges: [],
+            skills: {
+                machine: 0,
+                patternReading: 0,
+                construction: 0
+            },
+            lastSaved: Date.now()
+        };
+
+        // Base64 encoding/decoding for save codes
+        function encodeProgress(progress) {
+            return btoa(JSON.stringify(progress));
+        }
+
+        function decodeProgress(encoded) {
+            try {
+                return JSON.parse(atob(encoded));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Update demo display
+        function updateDemoDisplay() {
+            document.getElementById('currentLevel').textContent = demoProgress.level;
+            document.getElementById('currentXP').textContent = demoProgress.xp;
+            document.getElementById('currentBadges').textContent = demoProgress.badges.length;
+            document.getElementById('skillMachine').textContent = demoProgress.skills.machine;
+            document.getElementById('skillConstruction').textContent = demoProgress.skills.construction;
+        }
+
+        // Method 1: URL Hash
+        function saveToURL() {
+            const encoded = encodeProgress(demoProgress);
+            window.location.hash = encoded;
+            showNotification('Progress saved to URL! Bookmark this page to save your progress.', 'success');
+        }
+
+        function loadFromURL() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const loaded = decodeProgress(hash);
+                if (loaded) {
+                    demoProgress = loaded;
+                    updateDemoDisplay();
+                    showNotification('Progress loaded from URL!', 'success');
+                } else {
+                    showNotification('Invalid save data in URL', 'error');
+                }
+            } else {
+                showNotification('No save data found in URL', 'error');
+            }
+        }
+
+        // Method 2: Export/Import
+        function exportProgress() {
+            const encoded = encodeProgress(demoProgress);
+            const saveCode = `KAWAII-CRAFT-SAVE-${encoded}`;
+            document.getElementById('saveCode').textContent = saveCode;
+            
+            // Copy to clipboard if possible
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(saveCode);
+                showNotification('Save code copied to clipboard!', 'success');
+            }
+        }
+
+        function importProgress() {
+            const saveCode = document.getElementById('importCode').value.trim();
+            if (saveCode) {
+                const encoded = saveCode.replace('KAWAII-CRAFT-SAVE-', '');
+                const loaded = decodeProgress(encoded);
+                
+                if (loaded) {
+                    demoProgress = loaded;
+                    updateDemoDisplay();
+                    showNotification('Progress loaded from save code!', 'success');
+                    document.getElementById('importCode').value = '';
+                } else {
+                    showNotification('Invalid save code', 'error');
+                }
+            }
+        }
+
+        // Method 3: GitHub Gist
+        async function saveToGist() {
+            const token = document.getElementById('githubToken').value;
+            if (!token) {
+                showNotification('Please enter your GitHub token', 'error');
+                return;
+            }
+
+            const gistData = {
+                description: 'Kawaii Craft Academy Progress Save',
+                public: false,
+                files: {
+                    'kawaii-craft-progress.json': {
+                        content: JSON.stringify(demoProgress, null, 2)
+                    }
+                }
+            };
+
+            try {
+                const response = await fetch('https://api.github.com/gists', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(gistData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    localStorage.setItem('kawaii-craft-gist-id', result.id);
+                    showNotification('Progress saved to GitHub Gist!', 'success');
+                    document.getElementById('gistStatus').style.display = 'block';
+                    document.getElementById('gistStatus').textContent = `Gist ID: ${result.id}`;
+                } else {
+                    throw new Error('Failed to save to Gist');
+                }
+            } catch (error) {
+                showNotification('Error saving to Gist: ' + error.message, 'error');
+            }
+        }
+
+        async function loadFromGist() {
+            const token = document.getElementById('githubToken').value;
+            const gistId = localStorage.getItem('kawaii-craft-gist-id');
+            
+            if (!token) {
+                showNotification('Please enter your GitHub token', 'error');
+                return;
+            }
+            
+            if (!gistId) {
+                showNotification('No saved Gist ID found', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.github.com/gists/${gistId}`, {
+                    headers: {
+                        'Authorization': `token ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    const progressData = JSON.parse(result.files['kawaii-craft-progress.json'].content);
+                    demoProgress = progressData;
+                    updateDemoDisplay();
+                    showNotification('Progress loaded from GitHub Gist!', 'success');
+                } else {
+                    throw new Error('Failed to load from Gist');
+                }
+            } catch (error) {
+                showNotification('Error loading from Gist: ' + error.message, 'error');
+            }
+        }
+
+        // Method 4: File Download/Upload
+        function downloadProgress() {
+            const dataStr = JSON.stringify(demoProgress, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `kawaii-craft-progress-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function uploadProgress() {
+            const file = document.getElementById('uploadFile').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const progressData = JSON.parse(e.target.result);
+                        demoProgress = progressData;
+                        updateDemoDisplay();
+                        showNotification('Progress loaded from file!', 'success');
+                    } catch (error) {
+                        showNotification('Invalid progress file', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Simulate some progress for demo
+        function simulateProgress() {
+            demoProgress.level = Math.floor(Math.random() * 10) + 1;
+            demoProgress.xp = Math.floor(Math.random() * 100);
+            demoProgress.badges = ['🎯', '⚔️', '🌲'].slice(0, Math.floor(Math.random() * 3));
+            demoProgress.skills.machine = Math.floor(Math.random() * 80);
+            demoProgress.skills.construction = Math.floor(Math.random() * 60);
+            demoProgress.completedQuests = ['machine-familiar', 'five-stitches'].slice(0, Math.floor(Math.random() * 2) + 1);
+            demoProgress.lastSaved = Date.now();
+            
+            updateDemoDisplay();
+            showNotification('Demo progress generated!', 'info');
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'rgba(0, 255, 0, 0.2)',
+                error: 'rgba(255, 0, 0, 0.2)',
+                info: 'rgba(0, 150, 255, 0.2)',
+                warning: 'rgba(255, 165, 0, 0.2)'
+            };
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${colors[type]};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 2000;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transform: translateX(300px);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(300px)';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDemoDisplay();
+            loadFromURL(); // Try to load from URL on page load
+        });
+    </script>
+</body>
+</html>
