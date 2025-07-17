@@ -927,12 +927,18 @@
                 closeGameModal();
             }
         });
-/ Initialize the page
-document.addEventListener('DOMContentLoaded', function() {
-    createStars();
-    animateProgressBars();
-    addClickEffects();
-});
+document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeGameModal();
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            animateProgressBars();
+            addClickEffects();
+        });
     </script>
 </body>
 </html>
