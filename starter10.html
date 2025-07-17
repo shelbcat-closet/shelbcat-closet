@@ -864,6 +864,325 @@
             }
         };
 
+        // Add this to your existing JavaScript section
+
+// Progress tracking system
+let playerProgress = {
+    level: 1,
+    xp: 0,
+    xpToNext: 100,
+    completedQuests: [],
+    badges: [],
+    skills: {
+        machine: 0,
+        patternReading: 0,
+        construction: 0
+    }
+};
+
+// Quest definitions with XP rewards
+const quests = {
+    'machine-familiar': {
+        name: 'Meet Your Sewing Machine Familiar',
+        xpReward: 50,
+        skillRewards: { machine: 25 },
+        badge: '🎯'
+    },
+    'five-stitches': {
+        name: 'The Fundamental Five Stitches',
+        xpReward: 75,
+        skillRewards: { machine: 25, construction: 20 },
+        badge: '⚔️'
+    },
+    'fabric-forest': {
+        name: 'Fabric Forest Expedition',
+        xpReward: 100,
+        skillRewards: { patternReading: 30, construction: 15 },
+        badge: '🌲'
+    },
+    'tote-bag': {
+        name: 'Simple Tote Bag Creation',
+        xpReward: 150,
+        skillRewards: { construction: 40, machine: 10, patternReading: 10 },
+        badge: '👜'
+    }
+};
+
+// Complete a quest
+function completeQuest(questId) {
+    if (playerProgress.completedQuests.includes(questId)) {
+        return; // Already completed
+    }
+    
+    const quest = quests[questId];
+    
+    // Add XP
+    playerProgress.xp += quest.xpReward;
+    
+    // Add skills
+    Object.keys(quest.skillRewards).forEach(skill => {
+        playerProgress.skills[skill] += quest.skillRewards[skill];
+        if (playerProgress.skills[skill] > 100) {
+            playerProgress.skills[skill] = 100;
+        }
+    });
+    
+    // Add badge
+    playerProgress.badges.push(quest.badge);
+    
+    // Mark as completed
+    playerProgress.completedQuests.push(questId);
+    
+    // Check for level up
+    checkLevelUp();
+    
+    // Update UI
+    updateProgressUI();
+    
+    // Show completion message
+    showQuestComplete(quest);
+    
+    // Unlock next quest
+    unlockNextQuest(questId);
+}
+
+// Check if player leveled up
+function checkLevelUp() {
+    while (playerProgress.xp >= playerProgress.xpToNext) {
+        playerProgress.xp -= playerProgress.xpToNext;
+        playerProgress.level++;
+        playerProgress.xpToNext = Math.floor(playerProgress.xpToNext * 1.2); // Increase XP needed
+        
+        // Show level up notification
+        showLevelUp();
+    }
+}
+
+// Show quest completion notification
+function showQuestComplete(quest) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, rgba(255, 107, 157, 0.9), rgba(138, 43, 226, 0.9));
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        z-index: 2000;
+        font-family: 'Griffy', cursive;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 107, 157, 0.5);
+        transform: translateX(300px);
+        transition: transform 0.3s ease;
+    `;
+    
+    notification.innerHTML = `
+        <div style="font-size: 1.2rem; margin-bottom: 10px;">🎉 Quest Complete!</div>
+        <div>${quest.name}</div>
+        <div style="font-size: 0.9rem; margin-top: 5px;">+${quest.xpReward} XP • ${quest.badge} Badge Earned</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+        notification.style.transform = 'translateX(300px)';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Show level up notification
+function showLevelUp() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(255, 107, 157, 0.9));
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        z-index: 2000;
+        font-family: 'Griffy', cursive;
+        text-align: center;
+        backdrop-filter: blur(15px);
+        border: 3px solid rgba(255, 215, 0, 0.8);
+        font-size: 1.5rem;
+        animation: levelUpPulse 0.5s ease;
+    `;
+    
+    notification.innerHTML = `
+        <div style="font-size: 3rem; margin-bottom: 10px;">🌟</div>
+        <div>LEVEL UP!</div>
+        <div style="font-size: 1.2rem; margin-top: 10px;">Level ${playerProgress.level}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        document.body.removeChild(notification);
+    }, 2000);
+}
+
+// Update progress UI
+function updateProgressUI() {
+    // Update level display
+    const levelCard = document.querySelector('.quest-card h3');
+    if (levelCard && levelCard.textContent.includes('Current Level')) {
+        levelCard.textContent = `🌟 Current Level: ${getLevelName(playerProgress.level)}`;
+        levelCard.nextElementSibling.textContent = `Level ${playerProgress.level} of 50 • ${playerProgress.xp}/${playerProgress.xpToNext} XP to next level`;
+        
+        // Update level progress bar
+        const levelProgress = levelCard.parentElement.querySelector('.progress-fill');
+        levelProgress.style.width = (playerProgress.xp / playerProgress.xpToNext * 100) + '%';
+    }
+    
+    // Update badges
+    const badgeCard = document.querySelector('.quest-card h3');
+    const badgeCards = document.querySelectorAll('.quest-card h3');
+    badgeCards.forEach(card => {
+        if (card.textContent.includes('Badges Earned')) {
+            card.nextElementSibling.textContent = `${playerProgress.badges.length} of 50 badges collected`;
+            
+            // Update badge display
+            const badgeDisplay = card.parentElement.querySelector('span');
+            let badgeHTML = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < playerProgress.badges.length) {
+                    badgeHTML += `<span style="opacity: 1; font-size: 2rem;">${playerProgress.badges[i]}</span>`;
+                } else {
+                    badgeHTML += `<span style="opacity: 0.3; font-size: 2rem;">🏅</span>`;
+                }
+            }
+            badgeDisplay.innerHTML = badgeHTML;
+        }
+        
+        if (card.textContent.includes('Skill Mastery')) {
+            card.nextElementSibling.textContent = `Machine Skills: ${playerProgress.skills.machine}% • Pattern Reading: ${playerProgress.skills.patternReading}% • Construction: ${playerProgress.skills.construction}%`;
+            
+            // Update skill progress bar (average of all skills)
+            const avgSkill = (playerProgress.skills.machine + playerProgress.skills.patternReading + playerProgress.skills.construction) / 3;
+            const skillProgress = card.parentElement.querySelector('.progress-fill');
+            skillProgress.style.width = avgSkill + '%';
+        }
+    });
+    
+    // Update individual quest progress bars
+    updateQuestProgressBars();
+}
+
+// Update quest progress bars
+function updateQuestProgressBars() {
+    const questCards = document.querySelectorAll('.quest-card');
+    questCards.forEach(card => {
+        const title = card.querySelector('h3');
+        if (title) {
+            const questId = getQuestIdFromTitle(title.textContent);
+            if (questId && playerProgress.completedQuests.includes(questId)) {
+                const progressBar = card.querySelector('.progress-fill');
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                }
+            }
+        }
+    });
+}
+
+// Get quest ID from title
+function getQuestIdFromTitle(title) {
+    if (title.includes('Sewing Machine Familiar')) return 'machine-familiar';
+    if (title.includes('Five Stitches')) return 'five-stitches';
+    if (title.includes('Fabric Forest')) return 'fabric-forest';
+    if (title.includes('Tote Bag')) return 'tote-bag';
+    return null;
+}
+
+// Get level name
+function getLevelName(level) {
+    if (level < 5) return 'Apprentice';
+    if (level < 10) return 'Novice';
+    if (level < 20) return 'Journeyman';
+    if (level < 30) return 'Artisan';
+    if (level < 40) return 'Master';
+    return 'Grandmaster';
+}
+
+// Unlock next quest
+function unlockNextQuest(completedQuestId) {
+    const questOrder = ['machine-familiar', 'five-stitches', 'fabric-forest', 'tote-bag'];
+    const currentIndex = questOrder.indexOf(completedQuestId);
+    
+    if (currentIndex >= 0 && currentIndex < questOrder.length - 1) {
+        const nextQuestId = questOrder[currentIndex + 1];
+        
+        // Find and unlock the next quest card
+        const questCards = document.querySelectorAll('.quest-card');
+        questCards.forEach(card => {
+            const title = card.querySelector('h3');
+            if (title) {
+                const cardQuestId = getQuestIdFromTitle(title.textContent);
+                if (cardQuestId === nextQuestId) {
+                    card.classList.remove('locked');
+                    card.onclick = function() { openGameModal(nextQuestId); };
+                    
+                    // Remove lock overlay
+                    const lockOverlay = card.querySelector('.lock-overlay');
+                    if (lockOverlay) {
+                        lockOverlay.remove();
+                    }
+                    
+                    // Add play overlay
+                    const playOverlay = document.createElement('div');
+                    playOverlay.className = 'play-overlay';
+                    playOverlay.innerHTML = '<div class="play-button">▶️ PLAY</div>';
+                    card.appendChild(playOverlay);
+                }
+            }
+        });
+    }
+}
+
+// Add complete quest button to modal
+function addCompleteQuestButton(questId) {
+    const gameControls = document.querySelector('.game-controls');
+    
+    // Remove existing complete button if any
+    const existingButton = document.getElementById('completeQuestBtn');
+    if (existingButton) {
+        existingButton.remove();
+    }
+    
+    // Add complete quest button
+    const completeBtn = document.createElement('button');
+    completeBtn.id = 'completeQuestBtn';
+    completeBtn.className = 'crystal-btn small';
+    completeBtn.textContent = '✅ Complete Quest';
+    completeBtn.onclick = function() {
+        completeQuest(questId);
+        closeGameModal();
+    };
+    
+    gameControls.appendChild(completeBtn);
+}
+
+// CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes levelUpPulse {
+        0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+        50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+`;
+document.head.appendChild(style);
+
         function openGameModal(gameId) {
             const modal = document.getElementById('gameModal');
             const gameFrame = document.getElementById('gameFrame');
@@ -878,6 +1197,7 @@
             
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            addCompleteQuestButton(gameId); 
         }
 
         function closeGameModal() {
@@ -938,6 +1258,7 @@ document.addEventListener('keydown', function(event) {
             createStars();
             animateProgressBars();
             addClickEffects();
+            updateProgressUI(); 
         });
     </script>
 </body>
