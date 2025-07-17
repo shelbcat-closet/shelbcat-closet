@@ -927,7 +927,12 @@
                 closeGameModal();
             }
         });
-
+/ Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    createStars();
+    animateProgressBars();
+    addClickEffects();
+});
     </script>
 </body>
 </html>
