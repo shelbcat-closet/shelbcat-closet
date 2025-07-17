@@ -644,7 +644,7 @@
             <p class="quest-subtitle">Choose your path, young apprentice</p>
             
             <div class="quest-grid">
-                <div class="quest-card game-card" data-game-id="hand-sewing-level-1">
+                <div class="quest-card game-card" onclick="openGameModal('machine-familiar')">
                     <div class="difficulty">Beginner</div>
                     <div class="play-overlay">
                         <div class="play-button">▶️ PLAY</div>
@@ -928,73 +928,6 @@
             from { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
             to { text-shadow: 0 0 30px rgba(255, 107, 157, 0.8), 0 0 40px rgba(255, 107, 157, 0.6); }
         }
-
-    
-<script>
-    // Map of game IDs to their iframe src and instructions
-    const gameData = {
-        "hand-sewing-level-1": {
-            title: "Hand Sewing Level 1",
-            src: "https://scratch.mit.edu/projects/833668569/embed",
-            instructions: "Learn the basics of hand sewing with simple stitches."
-        },
-        "threading-the-machine": {
-            title: "Threading the Machine",
-            src: "https://scratch.mit.edu/projects/834182970/embed",
-            instructions: "Master threading a sewing machine correctly."
-        }
-        // Add other games as needed
-    };
-
-    const modal = document.querySelector('.game-modal');
-    const closeBtn = modal.querySelector('.close-btn');
-    const modalTitle = modal.querySelector('.modal-title');
-    const gameIframe = document.getElementById('game-iframe');
-    const instructions = document.getElementById('game-instructions').querySelector('p');
-
-    // Open modal function
-    function openModal(gameId) {
-        if (!gameData[gameId]) return; // No game data found
-        modalTitle.textContent = gameData[gameId].title;
-        gameIframe.src = gameData[gameId].src;
-        instructions.textContent = gameData[gameId].instructions;
-        modal.style.display = 'block';
-        modal.focus();
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
-    }
-
-    // Close modal function
-    function closeModal() {
-        modal.style.display = 'none';
-        gameIframe.src = ''; // Stop the game when modal closes
-        document.body.style.overflow = ''; // Restore scroll
-    }
-
-    // Event listener for quest cards
-    document.querySelectorAll('.game-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const gameId = card.getAttribute('data-game-id');
-            openModal(gameId);
-        });
-    });
-
-    // Close modal on close button click
-    closeBtn.addEventListener('click', closeModal);
-
-    // Close modal on click outside modal content
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // Close modal on pressing Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'block') {
-            closeModal();
-        }
-    });
-</script>
+    </script>
 </body>
 </html>
-
